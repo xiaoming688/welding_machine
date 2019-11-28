@@ -1,0 +1,4 @@
+welding_machine/.idea/
+*.iml
+*.class
+/target/
