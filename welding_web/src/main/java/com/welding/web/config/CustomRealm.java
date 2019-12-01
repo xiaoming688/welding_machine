@@ -1,13 +1,15 @@
 package com.welding.web.config;
 
-import org.apache.shiro.SecurityUtils;
+import com.welding.dao.pojo.LoginUser;
+import com.welding.web.config.shiro.ShiroUtils;
+import com.welding.web.service.SysUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,14 +18,22 @@ import java.util.Set;
  **/
 public class CustomRealm extends AuthorizingRealm {
 
+    @Autowired
+    private SysUserService sysUserService;
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        LoginUser user = ShiroUtils.getSysUser();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        Set<String> stringSet = new HashSet<>();
-        stringSet.add("user:show");
-        stringSet.add("user:admin");
-        info.setStringPermissions(stringSet);
+
+        //从数据库查权限
+        //根据用户ID查询角色（role），放入到Authorization里。
+        Set<String> roles = sysUserService.queryUserRoleKeys(user.getId());
+        info.setRoles(roles);
+        //根据用户ID查询权限（permission），放入到Authorization里。
+//        Set<String> permissions = adminPermissionService.queryPermissionByUserId(user.getId());
+//        info.setStringPermissions(permissions);
+
         return info;
     }
 
@@ -42,9 +52,13 @@ public class CustomRealm extends AuthorizingRealm {
         String password = "123";
         if (userName == null) {
             throw new AccountException("用户名不正确");
-        } else if (!userPwd.equals(password )) {
+        } else if (!userPwd.equals(password)) {
             throw new AccountException("密码不正确");
         }
-        return new SimpleAuthenticationInfo(userName, password,getName());
+        LoginUser user = new LoginUser();
+        user.setId(1);
+
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
+        return info;
     }
 }

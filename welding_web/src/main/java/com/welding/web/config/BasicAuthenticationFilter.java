@@ -1,10 +1,10 @@
 package com.welding.web.config;
 
 import com.welding.util.MData;
+import com.welding.web.config.shiro.ShiroUtils;
 import com.welding.web.util.ServletUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;

@@ -1,11 +1,15 @@
-package com.welding.web.config;
+package com.welding.web.config.shiro;
 
 import com.alibaba.fastjson.JSONObject;
+import com.welding.dao.pojo.LoginUser;
+import com.welding.util.BeanUtils;
 import com.welding.util.MData;
+import com.welding.util.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
 import javax.servlet.ServletRequest;
@@ -34,14 +38,24 @@ public class ShiroUtils {
     }
 
 
-//    public static void setSysUser(LoginUser user) {
-//        Subject subject = getSubject();
-//        PrincipalCollection principalCollection = subject.getPrincipals();
-//        String realmName = principalCollection.getRealmNames().iterator().next();
-//        PrincipalCollection newPrincipalCollection = new SimplePrincipalCollection(user, realmName);
-//        // 重新加载Principal
-//        subject.runAs(newPrincipalCollection);
-//    }
+    public static LoginUser getSysUser() {
+        LoginUser user = null;
+        Object obj = getSubject().getPrincipal();
+        if (!StringUtil.isBlank(obj)) {
+            user = new LoginUser();
+            BeanUtils.copyBeanProp(user, obj);
+        }
+        return user;
+    }
+
+    public static void setSysUser(LoginUser user) {
+        Subject subject = getSubject();
+        PrincipalCollection principalCollection = subject.getPrincipals();
+        String realmName = principalCollection.getRealmNames().iterator().next();
+        PrincipalCollection newPrincipalCollection = new SimplePrincipalCollection(user, realmName);
+        // 重新加载Principal
+        subject.runAs(newPrincipalCollection);
+    }
 
     public static String getIp() {
         return getSubject().getSession().getHost();
