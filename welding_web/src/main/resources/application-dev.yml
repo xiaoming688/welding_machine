@@ -19,10 +19,22 @@ spring:
     timeBetweenEvictionRunsMillis: 60000
     minEvictableIdleTimeMillis: 300000
 
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+
   thymeleaf:
     mode: HTML
     encoding: utf-8
     cache: false
+
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: i18n/messages
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:resources/,classpath:static/
 
 mybatis:
   configuration:
