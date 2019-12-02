@@ -2,9 +2,13 @@ package com.welding.web.pojo;
 
 import lombok.Data;
 
+/**
+ * @author MM
+ */
 @Data
 public class AddUserDto {
-    private String userNo;
+
+    private String accountNo;
 
     private String userName;
 

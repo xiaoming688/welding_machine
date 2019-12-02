@@ -2,7 +2,7 @@ spring:
   application:
     name: welding_web
   profiles:
-    active: dev
+    active: test
 
 
   servlet:

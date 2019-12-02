@@ -1,0 +1,47 @@
+server:
+  port: 8082
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types:
+      - application/json
+      - image/jpeg
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 6
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+
+  thymeleaf:
+    mode: HTML
+    encoding: utf-8
+    cache: false
+
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: i18n/messages
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:resources/,classpath:static/
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+
+logging:
+  path: /var/www/welding_machine/logs
+
+
+

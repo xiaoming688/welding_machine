@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author MM
@@ -13,10 +14,13 @@ import java.io.Serializable;
 @TableName("sys_user")
 public class SysUser extends BaseModel implements Serializable {
 
-    private String userNo;
+    private String accountNo;
+
+    private String cardNo;
 
     private Integer sex;
-    private String employeeNo;
+
+    private String weldingNo;
 
     private String userName;
 
@@ -32,5 +36,8 @@ public class SysUser extends BaseModel implements Serializable {
 
     private String technicalLevel;
 
+    private Date birthday;
+
+    private String status;
 
 }
