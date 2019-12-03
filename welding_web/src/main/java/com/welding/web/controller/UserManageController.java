@@ -24,8 +24,8 @@ import java.util.Map;
 @Api(tags = "基础信息管理", description = "")
 @Slf4j
 @RestController
-@RequestMapping("/welding")
-public class UserManagerController {
+@RequestMapping("/xxx")
+public class UserManageController {
 
     @Autowired
     private SysUserService sysUserService;
@@ -80,6 +80,75 @@ public class UserManagerController {
 
 
     /**
+     * 查询班组列表
+     *
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "查询班组列表", notes = "")
+    @RequestMapping(value = "/getClassGroupList", method = RequestMethod.POST)
+    public MData getClassGroupList() {
+        MData result = new MData();
+        return result;
+    }
+
+
+    /**
+     * 添加班组
+     *
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "添加班组", notes = "")
+    @RequestMapping(value = "/addClassGroup", method = RequestMethod.POST)
+    public MData addClassGroup() {
+        MData result = new MData();
+        return result;
+    }
+
+
+    /**
+     * 刪除班组
+     *
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "刪除班组", notes = "")
+    @RequestMapping(value = "/deleteClassGroup", method = RequestMethod.POST)
+    public MData deleteClassGroup() {
+        MData result = new MData();
+        return result;
+    }
+
+
+    /**
+     * 查询焊工
+     *
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "查询焊工", notes = "")
+    @RequestMapping(value = "/getWelderList", method = RequestMethod.POST)
+    public MData getWelderList() {
+        MData result = new MData();
+        return result;
+    }
+
+    /**
+     * 添加焊工
+     *
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "添加焊工", notes = "")
+    @RequestMapping(value = "/addWelder", method = RequestMethod.POST)
+    public MData addWelder() {
+        MData result = new MData();
+        return result;
+    }
+
+
+    /**
      * 获取用户分页信息
      *
      * @param getUserListDto
@@ -110,10 +179,12 @@ public class UserManagerController {
      */
     @ApiOperation(value = "添加用户", notes = "")
 //    @RequiresRoles(value = {"superadmin"})
-    @RequestMapping(value = "/addUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public MData addUser(@RequestBody AddUserDto addUserDto) {
         LoginUser user = ShiroUtils.getSysUser();
         MData result = new MData();
+
+        sysUserService.addSysUser(addUserDto);
         return result;
     }
 

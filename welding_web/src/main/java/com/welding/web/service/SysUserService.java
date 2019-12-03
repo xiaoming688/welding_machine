@@ -13,6 +13,10 @@ import com.welding.model.BaseModel;
 import com.welding.model.SysRole;
 import com.welding.model.SysUser;
 import com.welding.model.SysUserRole;
+import com.welding.util.MData;
+import com.welding.web.config.shiro.ShiroUtils;
+import com.welding.web.pojo.AddRoleDto;
+import com.welding.web.pojo.AddUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +54,21 @@ public class SysUserService {
         return userRoleKeys;
     }
 
+    public List<SysRole> queryRoleList() {
+        return sysRoleDao.selectList(new QueryWrapper<>());
+    }
+
+    public SysRole queryRoleById(Integer roleId) {
+        return sysRoleDao.selectById(roleId);
+    }
+
+    public SysUser queryUserByAccountNo(String accountNo) {
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        wrapper.eq("account_no", accountNo);
+        return sysUserDao.selectOne(wrapper);
+    }
+
+
     public SysUser queryUserById(Integer id) {
         return sysuserDaoImpl.queryUserById(id);
     }
@@ -58,7 +77,7 @@ public class SysUserService {
     public Integer addUser() {
         SysUser user = new SysUser();
 
-        user.setUserNo(RandomUtil.randomString(5));
+        user.setAccountNo(RandomUtil.randomString(5));
         user.setUserName("sdfdsf");
         user.setPassword("aaaaa");
         user.setTelephone("14455555555");
@@ -70,7 +89,7 @@ public class SysUserService {
     public void updateUser() {
         SysUser user = new SysUser();
         user.setId(2);
-        user.setUserNo(RandomUtil.randomString(5));
+        user.setAccountNo(RandomUtil.randomString(5));
         user.setUserName("test2....");
         sysuserDaoImpl.update(user);
     }
@@ -100,7 +119,7 @@ public class SysUserService {
         for (SysUser record : userPage.getRecords()) {
             UserListVo userListVo = new UserListVo();
 
-            userListVo.setUserNo(record.getUserNo());
+            userListVo.setAccountNo(record.getAccountNo());
             userListVo.setUserName(record.getUserName());
             userListVo.setPassword(record.getPassword());
             userListVo.setRoleName("");
@@ -115,10 +134,81 @@ public class SysUserService {
         Map<String, Object> result = new HashMap<>();
 
         result.put("pageTotal", userPage.getPages());
-        result.put("currentPage", userPage.getCurrent());
-        result.put("pageRecords", dataList);
+        result.put("pageNo", userPage.getCurrent());
+        result.put("pageData", dataList);
 
         return result;
     }
+
+    /**
+     * 添加系统角色
+     *
+     * @param addRoleDto
+     * @return
+     */
+    public MData addRole(AddRoleDto addRoleDto) {
+        MData result = new MData();
+        String roleKey = addRoleDto.getRoleKey();
+        String roleName = addRoleDto.getRoleName();
+
+        List<SysRole> roleList = queryRoleList();
+        for (SysRole sysRole : roleList) {
+            if (sysRole.getRoleKey().equals(roleKey)) {
+                return result.error("角色编码已存在");
+            }
+            if (sysRole.getRoleName().equals(roleName)) {
+                return result.error("角色名称已存在");
+            }
+        }
+        SysRole sysRole = new SysRole();
+        sysRole.setRoleKey(roleKey);
+        sysRole.setRoleName(roleName);
+        sysRoleDao.insert(sysRole);
+
+        result.setData(sysRole);
+        return result;
+    }
+
+    /**
+     * 添加用户
+     *
+     * @param addUserDto
+     */
+    @Transactional
+    public MData addSysUser(AddUserDto addUserDto) {
+        MData result = new MData();
+
+        SysUser sysUser = queryUserByAccountNo(addUserDto.getAccountNo());
+        if (sysUser != null) {
+            return result.error("用户账号已存在");
+        }
+        //检查角色id
+        SysRole role = queryRoleById(addUserDto.getRoleId());
+        if (role == null) {
+            return result.error("角色ID 参数错误");
+        }
+
+        SysUser user = new SysUser();
+        user.setUserName(addUserDto.getUserName());
+        user.setAccountNo(addUserDto.getAccountNo());
+        String salt = ShiroUtils.randomSalt();
+        user.setSalt(salt);
+        user.setPassword(ShiroUtils.encryptPassword(addUserDto.getPassword(), salt));
+        user.setTelephone(addUserDto.getTelephone());
+        user.setOfficePhone(addUserDto.getOfficePhone());
+        user.setEmail(addUserDto.getEmail());
+        user.setGroupId(addUserDto.getGroupId());
+
+        //添加用户
+        sysUserDao.insert(user);
+        //添加角色
+        SysUserRole userRole = new SysUserRole();
+        userRole.setUserId(user.getId());
+        userRole.setRoleId(addUserDto.getRoleId());
+
+        result.setData(user);
+        return result;
+    }
+
 
 }

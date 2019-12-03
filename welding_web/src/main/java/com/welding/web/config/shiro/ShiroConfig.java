@@ -2,7 +2,6 @@ package com.welding.web.config.shiro;
 
 import com.welding.constants.ShiroConstants;
 import com.welding.web.config.BasicAuthenticationFilter;
-import com.welding.web.config.CustomRealm;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -14,14 +13,11 @@ import org.apache.shiro.web.filter.mgt.DefaultFilter;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.LinkedHashMap;

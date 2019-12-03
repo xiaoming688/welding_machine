@@ -7,6 +7,7 @@ import com.welding.util.MData;
 import com.welding.util.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
@@ -73,6 +74,10 @@ public class ShiroUtils {
         SecureRandomNumberGenerator secureRandom = new SecureRandomNumberGenerator();
         String hex = secureRandom.nextBytes(3).toHex();
         return hex;
+    }
+
+    public static String encryptPassword(String password, String salt) {
+        return new Md5Hash(password + salt).toHex();
     }
 
     /**

@@ -19,12 +19,18 @@ public class SysUser extends BaseModel implements Serializable {
     private String cardNo;
 
     private Integer sex;
-
+    /**
+     * 焊工编码
+     */
     private String weldingNo;
+
+    private String stampNo;
 
     private String userName;
 
     private String password;
+
+    private String salt;
 
     private String telephone;
 
@@ -32,7 +38,7 @@ public class SysUser extends BaseModel implements Serializable {
 
     private String email;
 
-    private String groupId;
+    private Integer groupId;
 
     private String technicalLevel;
 

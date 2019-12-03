@@ -17,8 +17,6 @@ public class WeldingClassGroup extends BaseModel implements Serializable {
 
     private String leaderUserId;
 
-    private String leaderUserName;
-
     private String address;
 
     private String remark;
