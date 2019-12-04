@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.welding.constants.Constants;
 import com.welding.dao.SysRoleDao;
 import com.welding.dao.SysUserDao;
 import com.welding.dao.SysUserRoleDao;
@@ -17,6 +18,8 @@ import com.welding.util.MData;
 import com.welding.web.config.shiro.ShiroUtils;
 import com.welding.web.pojo.AddRoleDto;
 import com.welding.web.pojo.AddUserDto;
+import com.welding.web.pojo.DeleteUserDto;
+import com.welding.web.pojo.UpdateUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -206,9 +209,63 @@ public class SysUserService {
         userRole.setUserId(user.getId());
         userRole.setRoleId(addUserDto.getRoleId());
 
+        //添加用户日志。。。
+
         result.setData(user);
         return result;
     }
 
+    /**
+     * 删除用户
+     *
+     * @param deleteUserDto
+     * @return
+     */
+    public MData deleteSysUser(DeleteUserDto deleteUserDto) {
+        MData result = new MData();
+        SysUser sysUser = queryUserByAccountNo(deleteUserDto.getAccountNo());
+        if (sysUser == null) {
+            return result.error("用户账号不存在");
+        }
+        SysUser user = new SysUser();
+        user.setId(sysUser.getId());
+        user.setStatus(Constants.User.DELETED);
 
+        sysUserDao.updateById(user);
+        result.setData(user);
+        return result;
+    }
+
+    /**
+     * 编辑系统用户
+     * @param addUserDto
+     * @return
+     */
+    public MData updateSysUser(UpdateUserDto addUserDto) {
+        MData result = new MData();
+        SysUser sysUser = queryUserByAccountNo(addUserDto.getAccountNo());
+        if (sysUser == null) {
+            return result.error("用户账号不存在");
+        }
+        //检查角色id
+        SysRole role = queryRoleById(addUserDto.getRoleId());
+        if (role == null) {
+            return result.error("角色ID 参数错误");
+        }
+
+        SysUser user = new SysUser();
+        user.setId(sysUser.getId());
+        user.setUserName(addUserDto.getUserName());
+        user.setAccountNo(addUserDto.getAccountNo());
+        user.setTelephone(addUserDto.getTelephone());
+        user.setOfficePhone(addUserDto.getOfficePhone());
+        user.setEmail(addUserDto.getEmail());
+        user.setGroupId(addUserDto.getGroupId());
+
+        //更新用户
+        sysUserDao.updateById(user);
+
+        result.setData(user);
+        return result;
+    }
 }

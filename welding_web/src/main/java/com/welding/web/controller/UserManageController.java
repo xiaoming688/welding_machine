@@ -5,15 +5,13 @@ import com.welding.constants.Constants;
 import com.welding.dao.pojo.LoginUser;
 import com.welding.util.MData;
 import com.welding.web.config.shiro.ShiroUtils;
-import com.welding.web.pojo.AddUserDto;
-import com.welding.web.pojo.AddWorkerGroup;
-import com.welding.web.pojo.GetUserListDto;
-import com.welding.web.pojo.GetWorkerGroupListDto;
+import com.welding.web.pojo.*;
 import com.welding.web.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -180,12 +178,9 @@ public class UserManageController {
     @ApiOperation(value = "添加用户", notes = "")
 //    @RequiresRoles(value = {"superadmin"})
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public MData addUser(@RequestBody AddUserDto addUserDto) {
+    public MData addUser(@RequestBody @Validated AddUserDto addUserDto) {
         LoginUser user = ShiroUtils.getSysUser();
-        MData result = new MData();
-
-        sysUserService.addSysUser(addUserDto);
-        return result;
+        return sysUserService.addSysUser(addUserDto);
     }
 
 
@@ -196,22 +191,20 @@ public class UserManageController {
      */
     @ApiOperation(value = "修改用户信息", notes = "")
     @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
-    public MData updateUserInfo() {
-        MData result = new MData();
-        return result;
+    public MData updateUserInfo(@RequestBody UpdateUserDto addUserDto) {
+        return sysUserService.updateSysUser(addUserDto);
     }
 
     /**
      * 删除用户
      *
-     * @param addUserDto
+     * @param deleteUserDto
      * @return
      */
     @ApiOperation(value = "删除用户", notes = "")
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
-    public MData deleteUser(@RequestBody AddUserDto addUserDto) {
-        MData result = new MData();
-        return result;
+    public MData deleteUser(@RequestBody @Validated DeleteUserDto deleteUserDto) {
+        return sysUserService.deleteSysUser(deleteUserDto);
     }
 
 

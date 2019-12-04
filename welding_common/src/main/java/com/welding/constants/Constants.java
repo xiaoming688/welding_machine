@@ -16,7 +16,6 @@ public class Constants {
 
     public static class User{
         public static final String BLOCKED = "blocked";
-
-
+        public static final String DELETED = "deleted";
     }
 }
