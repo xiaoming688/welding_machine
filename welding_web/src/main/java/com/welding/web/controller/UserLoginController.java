@@ -6,6 +6,7 @@ import com.welding.util.MData;
 import com.welding.web.config.shiro.ShiroToken;
 import com.welding.web.config.shiro.ShiroUtils;
 import com.welding.web.pojo.LoginDto;
+import com.welding.web.service.SysOperateLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserLoginController {
+
+    @Autowired
+    private SysOperateLogService sysOperateLogService;
 
     @ApiOperation(value = "用户登入", notes = "")
     @PostMapping("/login")
@@ -43,6 +48,8 @@ public class UserLoginController {
             LoginUser user = ShiroUtils.getSysUser();
             result.put("nickName", user.getUserName());
             result.put("authority", user.getAuthority());
+
+            sysOperateLogService.addLoginLog(Constants.LOG.LOGIN, user.getId());
             return result;
         } catch (AuthenticationException e) {
             String msg = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : "用户或密码错误";

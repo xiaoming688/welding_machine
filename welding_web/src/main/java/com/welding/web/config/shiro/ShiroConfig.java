@@ -1,7 +1,6 @@
 package com.welding.web.config.shiro;
 
 import com.welding.constants.ShiroConstants;
-import com.welding.web.config.BasicAuthenticationFilter;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.session.mgt.SessionManager;

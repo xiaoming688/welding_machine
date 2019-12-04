@@ -85,7 +85,6 @@ public class SysLoginService {
     }
 
     public boolean matches(SysUser user, String password) {
-        String tt = ShiroUtils.encryptPassword(password, user.getSalt());
         return user.getPassword().equals(ShiroUtils.encryptPassword(password, user.getSalt()));
     }
 

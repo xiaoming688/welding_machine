@@ -11,8 +11,8 @@ import java.util.Date;
  * @create 2019-12-02 16:14
  **/
 @Data
-@TableName(value = "welding_operation_log")
-public class WeldingOperationLog extends BaseModel implements Serializable {
+@TableName(value = "welding_operate_log")
+public class WeldingOperateLog extends BaseModel implements Serializable {
 
     private Integer userId;
 
@@ -20,12 +20,10 @@ public class WeldingOperationLog extends BaseModel implements Serializable {
 
     private String content;
 
-    private String operatorId;
+    private Date operateTime;
 
-    private Date operatorTime;
+    private String operateIp;
 
-    private String businessType;
-
-    private String operatorMenu;
+    private String operateRoute;
 
 }

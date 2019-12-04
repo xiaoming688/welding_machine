@@ -1,4 +1,4 @@
-package com.welding.web.config;
+package com.welding.web.config.shiro;
 
 import com.welding.util.MData;
 import com.welding.web.config.shiro.ShiroUtils;
@@ -35,6 +35,7 @@ public class BasicAuthenticationFilter extends FormAuthenticationFilter {
         if (ServletUtils.isAjaxRequest(httpRequest)) {
             System.out.println("is json request time denied");
             MData map = new MData();
+            map.status("401");
             map.error("未登录");
             ShiroUtils.outMData(response, request, map);
         }

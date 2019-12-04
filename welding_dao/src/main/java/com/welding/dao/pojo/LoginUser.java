@@ -15,6 +15,7 @@ public class LoginUser extends SysUser implements Serializable {
     }
 
     public LoginUser(SysUser user) {
+        this.setId(user.getId());
         this.setUserName(user.getUserName());
         this.setAccountNo(user.getAccountNo());
         this.setTelephone(user.getTelephone());
