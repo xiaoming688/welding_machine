@@ -2,11 +2,14 @@ package com.welding.web.controller;
 
 import com.welding.constants.Constants;
 import com.welding.util.MData;
+import com.welding.util.Page;
 import com.welding.web.pojo.GetSysLogListDto;
-import com.welding.web.pojo.GetWorkerGroupListDto;
+import com.welding.dao.pojo.SysLogVo;
+import com.welding.web.service.SysOperateLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,8 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/welding")
 public class SystemManageController {
 
+    @Autowired
+    private SysOperateLogService sysOperateLogService;
+
     /**
-     * 获取生产组织分页信息
+     * 获取系统日志
      *
      * @param getSysLogListDto
      * @return
@@ -37,8 +43,12 @@ public class SystemManageController {
                 ? Constants.DEFAULT_PAGE_NO : getSysLogListDto.getPageNo();
         Integer pageSize = getSysLogListDto.getPageSize() == null
                 ? Constants.DEFAULT_PAGE_SIZE : getSysLogListDto.getPageSize();
-
         String logType = getSysLogListDto.getLogType();
+
+        Page<SysLogVo> pageData = sysOperateLogService.getSysOperateLogData(pageNo, pageSize, logType);
+
+        result.setData(pageData);
+
         return result;
     }
 
