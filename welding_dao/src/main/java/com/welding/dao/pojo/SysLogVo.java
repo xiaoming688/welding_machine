@@ -1,11 +1,14 @@
 package com.welding.dao.pojo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author MM
+ */
 @Data
 public class SysLogVo implements Serializable {
     private String logType;
@@ -17,6 +20,7 @@ public class SysLogVo implements Serializable {
     private String accountNo;
 
     private String userName;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date operateTime;
 }

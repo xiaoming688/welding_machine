@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author MM
  */
-public class Page<M> {
+public class PageData<M> {
 
     private Integer page = 1;
 
@@ -115,7 +115,7 @@ public class Page<M> {
 
     @Override
     public String toString() {
-        return "Page{" +
+        return "PageData{" +
                 "page=" + page +
                 ", size=" + size +
                 ", total=" + total +

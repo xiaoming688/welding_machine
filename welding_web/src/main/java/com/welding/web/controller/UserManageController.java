@@ -3,10 +3,13 @@ package com.welding.web.controller;
 
 import com.welding.constants.Constants;
 import com.welding.dao.pojo.LoginUser;
+import com.welding.dao.pojo.ProduceGroupListVo;
 import com.welding.util.MData;
+import com.welding.util.PageData;
 import com.welding.web.config.shiro.ShiroUtils;
 import com.welding.web.pojo.*;
 import com.welding.web.service.SysUserService;
+import com.welding.web.service.WeldingGroupService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +29,7 @@ import java.util.Map;
 public class UserManageController {
 
     @Autowired
-    private SysUserService sysUserService;
-
+    private WeldingGroupService weldingGroupService;
 
     /**
      * 获取生产组织分页信息
@@ -46,34 +48,50 @@ public class UserManageController {
                 ? Constants.DEFAULT_PAGE_SIZE : getWorkerGroupListDto.getPageSize();
 
         String groupName = getWorkerGroupListDto.getGroupName();
+        PageData<ProduceGroupListVo> pageData = weldingGroupService.getProduceGroupData(pageNo, pageSize, groupName);
+
+        result.setData(pageData);
+
         return result;
     }
 
     /**
-     * 获取生产组织分页信息
+     * 获取生产上级组织
+     *
+     * @return
+     */
+    @ApiOperation(value = "获取生产上级组织", notes = "")
+    @RequestMapping(value = "/getProduceParentGroup", method = RequestMethod.POST)
+    public MData getProduceParentGroup() {
+        MData result = new MData();
+        result.setData(weldingGroupService.getProduceParentGroup());
+        return result;
+    }
+
+
+    /**
+     * 添加生产组织
      *
      * @param adWorkerGroup
      * @return
      */
     @ApiOperation(value = "添加生产组织", notes = "")
     @RequestMapping(value = "/addWorkerGroup", method = RequestMethod.POST)
-    public MData addWorkerGroup(@RequestBody AddWorkerGroup adWorkerGroup) {
-        MData result = new MData();
-        return result;
+    public MData addWorkerGroup(@RequestBody AddProduceGroupDto adWorkerGroup) {
+        return weldingGroupService.addProduceGroup(adWorkerGroup);
     }
 
 
     /**
      * 删除生产组织
      *
-     * @param adWorkerGroup
+     * @param deleteProduceGroup
      * @return
      */
     @ApiOperation(value = "删除生产组织", notes = "")
     @RequestMapping(value = "/deleteWorkerGroup", method = RequestMethod.POST)
-    public MData deleteWorkerGroup(@RequestBody AddWorkerGroup adWorkerGroup) {
-        MData result = new MData();
-        return result;
+    public MData deleteWorkerGroup(@RequestBody DeleteProduceGroupDto deleteProduceGroup) {
+        return weldingGroupService.deleteProduceGroup(deleteProduceGroup);
     }
 
 
@@ -146,66 +164,7 @@ public class UserManageController {
     }
 
 
-    /**
-     * 获取用户分页信息
-     *
-     * @param getUserListDto
-     * @return
-     */
-    @ApiOperation(value = "获取用户信息", notes = "")
-    @RequestMapping(value = "/getUserList", method = RequestMethod.POST)
-    public MData getUserList(@RequestBody GetUserListDto getUserListDto) {
 
-        MData result = new MData();
-        Integer pageNo = getUserListDto.getPageNo() == null
-                ? Constants.DEFAULT_PAGE_NO : getUserListDto.getPageNo();
-        Integer pageSize = getUserListDto.getPageSize() == null
-                ? Constants.DEFAULT_PAGE_SIZE : getUserListDto.getPageSize();
-
-        String userNo = getUserListDto.getUserNo();
-        Map<String, Object> dataList = sysUserService.queryUserList(pageNo, pageSize, userNo);
-        result.put("data", dataList);
-        return result;
-    }
-
-
-    /**
-     * 添加用户
-     *
-     * @param addUserDto
-     * @return
-     */
-    @ApiOperation(value = "添加用户", notes = "")
-//    @RequiresRoles(value = {"superadmin"})
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public MData addUser(@RequestBody @Validated AddUserDto addUserDto) {
-        LoginUser user = ShiroUtils.getSysUser();
-        return sysUserService.addSysUser(addUserDto);
-    }
-
-
-    /**
-     * 修改用户信息
-     *
-     * @return
-     */
-    @ApiOperation(value = "修改用户信息", notes = "")
-    @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
-    public MData updateUserInfo(@RequestBody UpdateUserDto addUserDto) {
-        return sysUserService.updateSysUser(addUserDto);
-    }
-
-    /**
-     * 删除用户
-     *
-     * @param deleteUserDto
-     * @return
-     */
-    @ApiOperation(value = "删除用户", notes = "")
-    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
-    public MData deleteUser(@RequestBody @Validated DeleteUserDto deleteUserDto) {
-        return sysUserService.deleteSysUser(deleteUserDto);
-    }
 
 
 }

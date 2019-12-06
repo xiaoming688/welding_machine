@@ -17,7 +17,7 @@ public class WeldingProduceGroup extends BaseModel implements Serializable {
 
     private Integer parentId;
 
-    private Integer leaderUserId;
+    private String leaderUserName;
 
     private String groupType;
 

@@ -2,7 +2,7 @@ package com.welding.web.controller;
 
 import com.welding.constants.Constants;
 import com.welding.util.MData;
-import com.welding.util.Page;
+import com.welding.util.PageData;
 import com.welding.web.pojo.GetSysLogListDto;
 import com.welding.dao.pojo.SysLogVo;
 import com.welding.web.service.SysOperateLogService;
@@ -45,7 +45,7 @@ public class SystemManageController {
                 ? Constants.DEFAULT_PAGE_SIZE : getSysLogListDto.getPageSize();
         String logType = getSysLogListDto.getLogType();
 
-        Page<SysLogVo> pageData = sysOperateLogService.getSysOperateLogData(pageNo, pageSize, logType);
+        PageData<SysLogVo> pageData = sysOperateLogService.getSysOperateLogData(pageNo, pageSize, logType);
 
         result.setData(pageData);
 

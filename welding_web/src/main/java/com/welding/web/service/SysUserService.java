@@ -133,7 +133,7 @@ public class SysUserService {
 
             dataList.add(userListVo);
         }
-//        IPage<UserListVo> ddd = sysUserDao.queryUserListPage(new Page<UserListVo>(pageNo, pageSize), wrapper);
+//        IPage<UserListVo> ddd = sysUserDao.queryUserListPage(new PageData<UserListVo>(pageNo, pageSize), wrapper);
         Map<String, Object> result = new HashMap<>();
 
         result.put("pageTotal", userPage.getPages());

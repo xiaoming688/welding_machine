@@ -7,19 +7,19 @@ import lombok.Data;
  * @create 2019-12-02 17:06
  **/
 @Data
-public class AddWorkerGroup {
+public class AddProduceGroupDto {
 
     private String groupName;
 
-    private Integer groupType;
+    private String groupType;
 
     private Integer parentGroupId;
 
-    private String location;
+    private String address;
 
     private String email;
 
-    private String name;
+    private String leaderName;
 
     private String remark;
 

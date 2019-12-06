@@ -8,6 +8,9 @@ public class Constants {
 
     public final static String LOGINTYPE_ACCOUNT_PASSWORD = "account_password";
 
+    public final static String DELETE = "deleted";
+    public static final String ACTIVE = "active";
+
     public static class LOG{
         public static final String ADD = "add";
         public static final String LOGIN = "login";

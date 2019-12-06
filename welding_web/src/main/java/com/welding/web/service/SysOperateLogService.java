@@ -2,9 +2,10 @@ package com.welding.web.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.welding.dao.WeldingOperateLogDao;
 import com.welding.model.WeldingOperateLog;
-import com.welding.util.Page;
+import com.welding.util.PageData;
 import com.welding.web.config.shiro.ShiroUtils;
 import com.welding.dao.pojo.SysLogVo;
 import com.welding.web.util.ServletUtils;
@@ -20,6 +21,7 @@ import java.util.Date;
  **/
 @Service
 public class SysOperateLogService {
+
     @Autowired
     private WeldingOperateLogDao weldingOperateLogDao;
 
@@ -36,14 +38,14 @@ public class SysOperateLogService {
         weldingOperateLogDao.insert(operateLog);
     }
 
-    public Page<SysLogVo> getSysOperateLogData(Integer pageNo, Integer pageSize, String logType){
-        Page<SysLogVo> pageData = new Page<>();
+    public PageData<SysLogVo> getSysOperateLogData(Integer pageNo, Integer pageSize, String logType){
+        PageData<SysLogVo> pageData = new PageData<>();
 
         QueryWrapper<WeldingOperateLog> wrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(logType)) {
             wrapper.eq("log_type", logType);
         }
-        IPage<SysLogVo> page = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageNo, pageSize);
+        IPage<SysLogVo> page = new Page<>(pageNo, pageSize);
 
         IPage<SysLogVo> pageRecords =  weldingOperateLogDao.queryLogPage(page, wrapper);
         pageData.setData(pageRecords.getRecords());
