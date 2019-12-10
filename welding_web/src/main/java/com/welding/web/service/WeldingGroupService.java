@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.welding.constants.Constants;
+import com.welding.dao.WeldingClassGroupDao;
 import com.welding.dao.WeldingProduceGroupDao;
 import com.welding.dao.pojo.ProduceGroupListVo;
 import com.welding.dao.pojo.ProduceParentGroupVo;
+import com.welding.model.WeldingClassGroup;
 import com.welding.model.WeldingProduceGroup;
 import com.welding.util.MData;
 import com.welding.util.PageData;
+import com.welding.web.pojo.AddClassGroupDto;
 import com.welding.web.pojo.AddProduceGroupDto;
 import com.welding.web.pojo.DeleteProduceGroupDto;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,9 @@ public class WeldingGroupService {
 
     @Autowired
     private WeldingProduceGroupDao weldingProduceGroupDao;
+
+    @Autowired
+    private WeldingClassGroupDao weldingClassGroupDao;
 
 
     public PageData<ProduceGroupListVo> getProduceGroupData(Integer pageNo, Integer pageSize, String groupName) {
@@ -95,6 +101,12 @@ public class WeldingGroupService {
         return weldingProduceGroupDao.selectOne(wrapper);
     }
 
+    private WeldingClassGroup getClassGroupByName(String groupName) {
+        QueryWrapper<WeldingClassGroup> wrapper = new QueryWrapper<>();
+        wrapper.eq("group_name", groupName);
+        return weldingClassGroupDao.selectOne(wrapper);
+    }
+
     /**
      * 删除生产组织
      *
@@ -115,6 +127,55 @@ public class WeldingGroupService {
         produceGroupUpdate.setStatus(Constants.DELETE);
 
         weldingProduceGroupDao.updateById(produceGroupUpdate);
+
+        return result;
+    }
+
+    /**
+     * 添加班组
+     *
+     * @param addClassGroupDto
+     * @return
+     */
+    public MData addClassGroup(AddClassGroupDto addClassGroupDto) {
+
+        MData result = new MData();
+
+        String groupName = addClassGroupDto.getGroupName();
+        WeldingClassGroup group = getClassGroupByName(groupName);
+        if (group != null) {
+            return result.error("该生产组织已存在");
+        }
+        //..todo
+        WeldingClassGroup produceGroup = new WeldingClassGroup();
+        produceGroup.setAddress(addClassGroupDto.getAddress());
+        produceGroup.setGroupName(addClassGroupDto.getGroupName());
+        produceGroup.setStatus(Constants.ACTIVE);
+
+        weldingClassGroupDao.insert(produceGroup);
+
+        return result;
+    }
+
+    /**
+     * 删除班组
+     *
+     * @param deleteProduceGroup
+     * @return
+     */
+    public MData deleteClassGroup(DeleteProduceGroupDto deleteProduceGroup) {
+        MData result = new MData();
+        String produceGroupName = deleteProduceGroup.getGroupName();
+        WeldingClassGroup produceGroup = getClassGroupByName(produceGroupName);
+
+        if (produceGroup == null) {
+            return result.error("组织名称有误");
+        }
+        WeldingClassGroup produceGroupUpdate = new WeldingClassGroup();
+        produceGroupUpdate.setId(produceGroup.getId());
+        produceGroupUpdate.setStatus(Constants.DELETE);
+
+        weldingClassGroupDao.updateById(produceGroupUpdate);
 
         return result;
     }

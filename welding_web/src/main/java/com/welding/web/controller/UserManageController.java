@@ -25,7 +25,7 @@ import java.util.Map;
 @Api(tags = "基础信息管理", description = "")
 @Slf4j
 @RestController
-@RequestMapping("/xxx")
+@RequestMapping("/welding")
 public class UserManageController {
 
     @Autowired
@@ -103,8 +103,14 @@ public class UserManageController {
      */
     @ApiOperation(value = "查询班组列表", notes = "")
     @RequestMapping(value = "/getClassGroupList", method = RequestMethod.POST)
-    public MData getClassGroupList() {
+    public MData getClassGroupList(@RequestBody GetWorkerGroupListDto getClassGroupListDto) {
         MData result = new MData();
+        Integer pageNo = getClassGroupListDto.getPageNo() == null
+                ? Constants.DEFAULT_PAGE_NO : getClassGroupListDto.getPageNo();
+        Integer pageSize = getClassGroupListDto.getPageSize() == null
+                ? Constants.DEFAULT_PAGE_SIZE : getClassGroupListDto.getPageSize();
+
+        String groupName = getClassGroupListDto.getGroupName();
         return result;
     }
 
@@ -117,9 +123,8 @@ public class UserManageController {
      */
     @ApiOperation(value = "添加班组", notes = "")
     @RequestMapping(value = "/addClassGroup", method = RequestMethod.POST)
-    public MData addClassGroup() {
-        MData result = new MData();
-        return result;
+    public MData addClassGroup(@RequestBody AddClassGroupDto addClassGroupDto) {
+        return weldingGroupService.addClassGroup(addClassGroupDto);
     }
 
 
@@ -131,9 +136,8 @@ public class UserManageController {
      */
     @ApiOperation(value = "刪除班组", notes = "")
     @RequestMapping(value = "/deleteClassGroup", method = RequestMethod.POST)
-    public MData deleteClassGroup() {
-        MData result = new MData();
-        return result;
+    public MData deleteClassGroup(@RequestBody DeleteProduceGroupDto deleteProduceGroup) {
+        return weldingGroupService.deleteClassGroup(deleteProduceGroup);
     }
 
 
