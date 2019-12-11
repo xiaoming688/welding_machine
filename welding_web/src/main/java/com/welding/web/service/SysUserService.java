@@ -9,12 +9,14 @@ import com.welding.dao.SysRoleDao;
 import com.welding.dao.SysUserDao;
 import com.welding.dao.SysUserRoleDao;
 import com.welding.dao.pojo.UserListVo;
+import com.welding.dao.pojo.WelderListVo;
 import com.welding.impl.SysUserDaoImpl;
 import com.welding.model.BaseModel;
 import com.welding.model.SysRole;
 import com.welding.model.SysUser;
 import com.welding.model.SysUserRole;
 import com.welding.util.MData;
+import com.welding.util.PageData;
 import com.welding.web.config.shiro.ShiroUtils;
 import com.welding.web.pojo.AddRoleDto;
 import com.welding.web.pojo.AddUserDto;
@@ -65,10 +67,41 @@ public class SysUserService {
         return sysRoleDao.selectById(roleId);
     }
 
+    public IPage<WelderListVo> queryWelderListPage(IPage<WelderListVo> page, QueryWrapper<SysUser> wrapper) {
+        return sysUserDao.queryWelderPage(page, wrapper);
+    }
+
+    public List<Integer> queryWelderUserIdList() {
+        SysRole role = queryWeldingRole();
+
+        QueryWrapper<SysUserRole> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_id", role.getId());
+        List<SysUserRole> userRoleList = sysUserRoleDao.selectList(wrapper);
+        return userRoleList.stream().map(SysUserRole::getUserId).collect(Collectors.toList());
+    }
+
+
     public SysUser queryUserByAccountNo(String accountNo) {
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
         wrapper.eq("account_no", accountNo);
         return sysUserDao.selectOne(wrapper);
+    }
+
+    public SysUser queryUserByWeldingNo(String weldingNo) {
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        wrapper.eq("welding_no", weldingNo);
+        return sysUserDao.selectOne(wrapper);
+    }
+
+    /**
+     * 查焊工角色
+     *
+     * @return
+     */
+    public SysRole queryWeldingRole() {
+        QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_key", Constants.ROLE_WELDER);
+        return sysRoleDao.selectOne(wrapper);
     }
 
 
@@ -143,6 +176,7 @@ public class SysUserService {
         return result;
     }
 
+
     /**
      * 添加系统角色
      *
@@ -208,7 +242,7 @@ public class SysUserService {
         SysUserRole userRole = new SysUserRole();
         userRole.setUserId(user.getId());
         userRole.setRoleId(addUserDto.getRoleId());
-
+        sysUserRoleDao.insert(userRole);
         //添加用户日志。。。
 
         result.setData(user);
@@ -238,6 +272,7 @@ public class SysUserService {
 
     /**
      * 编辑系统用户
+     *
      * @param addUserDto
      * @return
      */
@@ -268,4 +303,6 @@ public class SysUserService {
         result.setData(user);
         return result;
     }
+
+
 }

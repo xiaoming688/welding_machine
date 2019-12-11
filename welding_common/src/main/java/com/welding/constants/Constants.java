@@ -10,6 +10,8 @@ public class Constants {
 
     public final static String DELETE = "deleted";
     public static final String ACTIVE = "active";
+    public static final String ROLE_WELDER = "welder";
+    public static final String DEFAULT_PASSWORD = "123456";
 
     public static class LOG{
         public static final String ADD = "add";

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.welding.dao.pojo.UserListVo;
+import com.welding.dao.pojo.WelderListVo;
 import com.welding.model.SysUser;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -38,5 +39,8 @@ public interface SysUserDao extends BaseMapper<SysUser> {
             "left join sys_role sr on sr.id = ur.role_id  ${ew.customSqlSegment}")
     IPage<UserListVo> queryUserListPage(Page page, @Param(Constants.WRAPPER) QueryWrapper<SysUser> wrapper);
 
-
+    @Select("select u.welding_no as weldingNo, u.user_name as userName, u.card_no as cardNo, u.sex, u.birthday, " +
+            "u.stamp_no as stampNo, u.technical_level as technicalLevel, u.group_id as groupName " +
+            "from sys_user u ${ew.customSqlSegment}")
+    IPage<WelderListVo> queryWelderPage(IPage<WelderListVo> page, @Param(Constants.WRAPPER) QueryWrapper<SysUser> wrapper);
 }
