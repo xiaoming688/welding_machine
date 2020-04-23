@@ -1,8 +1,11 @@
 package com.welding.web.config.shiro;
 
+import com.welding.constants.ShiroConstants;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -10,11 +13,17 @@ import java.util.*;
  * @author MM
  * @create 2019-01-15 14:40
  **/
+@Component
 public class ShiroRedisCache<K, V> implements Cache<K, V> {
 
     private RedisTemplate redisTemplate;
 
     private String prefix = "shiro_redis";
+
+    @Autowired
+    private ShiroConstants shiroConstants;
+
+    private long expireTime = 86400;
 
     public String getPrefix() {
         return prefix + ":";
@@ -22,6 +31,9 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 
     public void setPrefix(String prefix) {
         this.prefix = prefix;
+    }
+
+    public ShiroRedisCache() {
     }
 
     public ShiroRedisCache(RedisTemplate redisTemplate) {
@@ -48,6 +60,9 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
             return null;
         }
         System.out.println("put cache key: "+ buildCacheKey(k));
+
+        long timeout = shiroConstants.getExpireTime() / 1000 + expireTime;
+        System.out.println("put cache key: " + buildCacheKey(k) + ": timeout" + timeout);
         redisTemplate.opsForValue().set(buildCacheKey(k), v);
         return v;
     }

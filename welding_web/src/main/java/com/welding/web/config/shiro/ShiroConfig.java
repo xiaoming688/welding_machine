@@ -60,14 +60,14 @@ public class ShiroConfig {
         return new CustomRealm();
     }
 
-    /**
-     * 生成一个ShiroRedisCacheManager
-     *
-     * @return
-     **/
-    public CacheManager cacheManager(RedisTemplate<Object, Object> redisTemplateJdk) {
-        return new ShiroRedisCacheManager(redisTemplateJdk);
-    }
+//    /**
+//     * 生成一个ShiroRedisCacheManager
+//     *
+//     * @return
+//     **/
+//    public CacheManager cacheManager(RedisTemplate<Object, Object> redisTemplateJdk) {
+//        return new ShiroRedisCacheManager(redisTemplateJdk);
+//    }
 
 
     /**
@@ -88,16 +88,16 @@ public class ShiroConfig {
         sessionManager.setSessionDAO(enterpriseCacheSessionDAO);
         //设置session过期时间
         sessionManager.setGlobalSessionTimeout(shiroConstants.getExpireTime());
-        sessionManager.setSessionValidationSchedulerEnabled(true);
-        sessionManager.setSessionValidationInterval(shiroConstants.getValidationInterval());
+        sessionManager.setSessionValidationSchedulerEnabled(false);
+//        sessionManager.setSessionValidationInterval(shiroConstants.getValidationInterval());
         return sessionManager;
     }
 
     @Bean
-    public SecurityManager securityManager(CustomRealm customRealm, RedisTemplate<Object, Object> redisTemplateJdk, SessionManager sessionManager) {
+    public SecurityManager securityManager(CustomRealm customRealm, CacheManager shiroRedisCacheManager, SessionManager sessionManager) {
         DefaultWebSecurityManager defaultSecurityManager = new DefaultWebSecurityManager();
         defaultSecurityManager.setRememberMeManager(rememberMeManager());
-        defaultSecurityManager.setCacheManager(cacheManager(redisTemplateJdk));
+        defaultSecurityManager.setCacheManager(shiroRedisCacheManager);
         defaultSecurityManager.setSessionManager(sessionManager);
         defaultSecurityManager.setRealm(customRealm);
         return defaultSecurityManager;
