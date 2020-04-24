@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -41,10 +42,10 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 
         // 设置免认证 url
-//        String[] anonUrls = StringUtils.splitArrayElementsIntoProperties(shiroConstants.getAnonUrl(), ",");
-//        for (String url : anonUrls) {
-//            filterChainDefinitionMap.put(url, "anon");
-//        }
+        String[] anonUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(shiroConstants.getAnonUrl(), ",");
+        for (String url : anonUrls) {
+            filterChainDefinitionMap.put(url, "anon");
+        }
         filterChainDefinitionMap.put("/user/userLogin", "anon");
         //主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截 剩余的都需要认证
         filterChainDefinitionMap.put("/welding/**", "authc");

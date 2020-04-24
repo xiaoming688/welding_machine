@@ -13,7 +13,7 @@ public class WeldingData extends BaseModel implements Serializable {
 
     private String teamCode;
 
-    private Integer process;
+    private String process;
 
     private String equipCode;
 
@@ -54,6 +54,6 @@ public class WeldingData extends BaseModel implements Serializable {
 
     private String uploadStatus;
 
-    private String isHistory;
+    private Integer isHistory;
 
 }

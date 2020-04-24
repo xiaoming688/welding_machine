@@ -16,7 +16,8 @@ import java.util.*;
 @Component
 public class ShiroRedisCache<K, V> implements Cache<K, V> {
 
-    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplateJdk;
 
     private String prefix = "shiro_redis";
 
@@ -37,7 +38,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
     }
 
     public ShiroRedisCache(RedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
+        this.redisTemplateJdk = redisTemplate;
     }
 
     public ShiroRedisCache(RedisTemplate redisTemplate, String prefix) {
@@ -51,7 +52,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
             return null;
         }
         System.out.println("get cache key: "+ buildCacheKey(k));
-        return (V) redisTemplate.opsForValue().get(buildCacheKey(k));
+        return (V) redisTemplateJdk.opsForValue().get(buildCacheKey(k));
     }
 
     @Override
@@ -63,7 +64,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 
         long timeout = shiroConstants.getExpireTime() / 1000 + expireTime;
         System.out.println("put cache key: " + buildCacheKey(k) + ": timeout" + timeout);
-        redisTemplate.opsForValue().set(buildCacheKey(k), v);
+        redisTemplateJdk.opsForValue().set(buildCacheKey(k), v);
         return v;
     }
 
@@ -73,8 +74,8 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
             return null;
         }
         System.out.println("remove cache key: "+ buildCacheKey(k));
-        V v = (V) redisTemplate.opsForValue().get(buildCacheKey(k));
-        redisTemplate.delete(buildCacheKey(k));
+        V v = (V) redisTemplateJdk.opsForValue().get(buildCacheKey(k));
+        redisTemplateJdk.delete(buildCacheKey(k));
         return v;
     }
 
@@ -101,7 +102,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
     @Override
     public Set<K> keys() {
         byte[] bytes = (getPrefix() + "*").getBytes();
-        Set<byte[]> keys = redisTemplate.keys(bytes);
+        Set<byte[]> keys = redisTemplateJdk.keys(bytes);
         Set<K> sets = new HashSet<>();
         for (byte[] key : keys) {
             sets.add((K) key);
