@@ -44,7 +44,7 @@ public class WeldingDataController {
     public MData getCurrentList() {
         MData result = new MData();
         List<WeldingData> dataList = weldingDataService.queryCurrentData();
-        weldingDataService.syncDataRequest(dataList, "http://127.0.0.1:8080/welding/test/testCurrent");
+        weldingDataService.syncDataRequest(dataList, "http://127.0.0.1:8082/welding/test/testCurrent");
         result.setData(dataList);
 
         return result;
@@ -55,7 +55,7 @@ public class WeldingDataController {
     public MData getHistoryList() {
         MData result = new MData();
         List<WeldingData> dataList = weldingDataService.getHistoryData();
-        weldingDataService.syncDataRequest(dataList, "http://127.0.0.1:8080/welding/test/testHistory");
+        weldingDataService.syncDataRequest(dataList, "http://127.0.0.1:8082/welding/test/testHistory");
         result.setData(dataList);
         return result;
     }
