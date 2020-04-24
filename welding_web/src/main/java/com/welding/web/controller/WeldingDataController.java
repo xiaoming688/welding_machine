@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +34,7 @@ import java.util.Map;
 @Slf4j
 @ApiOperation(value = "同步数据测试", notes = "")
 @RestController
-@RequestMapping(value = "/welding/test", method = RequestMethod.POST)
+@RequestMapping(value = "/welding/test")
 public class WeldingDataController {
 
     @Autowired
@@ -60,7 +61,8 @@ public class WeldingDataController {
         return result;
     }
 
-    @ApiOperation(value = "测试请求实时", notes = "")
+
+    @ApiIgnore
     @RequestMapping(value = "/testCurrent", method = RequestMethod.POST)
     public MData testCurrent(@RequestBody Map<String, String> hjDatas) {
         MData result = new MData();
@@ -70,7 +72,7 @@ public class WeldingDataController {
         return result;
     }
 
-    @ApiOperation(value = "测试请求实时", notes = "")
+    @ApiIgnore
     @RequestMapping(value = "/testHistory", method = RequestMethod.POST)
     public MData testHistory(@RequestBody Map<String, String> hjDatas) {
         MData result = new MData();
