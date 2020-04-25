@@ -60,8 +60,6 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
         if (k == null || v == null) {
             return null;
         }
-        System.out.println("put cache key: "+ buildCacheKey(k));
-
         long timeout = shiroConstants.getExpireTime() / 1000 + expireTime;
         System.out.println("put cache key: " + buildCacheKey(k) + ": timeout" + timeout);
         redisTemplateJdk.opsForValue().set(buildCacheKey(k), v);

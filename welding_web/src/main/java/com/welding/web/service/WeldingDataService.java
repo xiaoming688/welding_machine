@@ -48,7 +48,7 @@ public class WeldingDataService {
     }
 
 
-    public void syncDataRequest(List<WeldingData> dataList, String url) {
+    public JSONObject syncDataRequest(List<WeldingData> dataList, String url) {
         try {
             Http http = new Http(url);
 
@@ -87,6 +87,9 @@ public class WeldingDataService {
             stringEntity.setContentType("application/json;charset=UTF-8");
 
             Http.HttpResult r = http.doPost(stringEntity);
+            if (r == null) {
+                return null;
+            }
             log.info("result:" + r);
             JSONObject jsonResult = r.toJsonObject();
             //同步成功。。
@@ -95,11 +98,13 @@ public class WeldingDataService {
             } else {
                 updateWeldingDataHistory(dataList, Constants.SYNC_IS_HISTORY);
             }
+            return jsonResult;
         } catch (Exception e) {
             log.error(e.toString(), e);
             //异常后这批数据用重传
             updateWeldingDataHistory(dataList, Constants.SYNC_IS_HISTORY);
         }
+        return null;
     }
 
 
