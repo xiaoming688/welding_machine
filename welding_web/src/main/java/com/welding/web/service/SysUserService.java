@@ -50,6 +50,7 @@ public class SysUserService {
     private SysRoleDao sysRoleDao;
 
 
+
     public Set<String> queryUserRoleKeys(Integer userId) {
         List<Map<String, String>> userRoles = sysUserRoleDao.queryUserRoles(userId);
         Set<String> userRoleKeys = new HashSet<>();

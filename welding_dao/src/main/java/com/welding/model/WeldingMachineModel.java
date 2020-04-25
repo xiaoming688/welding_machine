@@ -6,6 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
+ * 焊机型号
  * @author MM
  * @create 2019-12-02 16:20
  **/
@@ -20,5 +21,7 @@ public class WeldingMachineModel extends BaseModel implements Serializable {
     private String name;
 
     private String description;
+
+    private String status;
 
 }

@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -54,7 +56,9 @@ public class SysLoginService {
     public LoginUser login(String username, String password, String loginType) {
         SysUser user = sysUserService.queryUserByAccountNo(username);
         validate(user, password, loginType);
+        Set<String> roles = sysUserService.queryUserRoleKeys(user.getId());
         LoginUser sysUser = new LoginUser(user);
+        sysUser.setAuthority(new ArrayList<>(roles));
         return sysUser;
     }
 

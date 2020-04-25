@@ -2,6 +2,7 @@ package com.welding.web.controller;
 
 
 import com.welding.constants.Constants;
+import com.welding.dao.pojo.ClassGroupListVo;
 import com.welding.dao.pojo.ProduceGroupListVo;
 import com.welding.dao.pojo.WelderListVo;
 import com.welding.util.MData;
@@ -111,6 +112,9 @@ public class UserManageController {
                 ? Constants.DEFAULT_PAGE_SIZE : getClassGroupListDto.getPageSize();
 
         String groupName = getClassGroupListDto.getGroupName();
+
+        PageData<ClassGroupListVo> pageData = weldingGroupService.getClassGroupData(pageNo, pageSize, groupName);
+        result.setData(pageData);
         return result;
     }
 

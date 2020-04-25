@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.welding.constants.Constants;
 import com.welding.dao.WeldingClassGroupDao;
 import com.welding.dao.WeldingProduceGroupDao;
+import com.welding.dao.pojo.ClassGroupListVo;
 import com.welding.dao.pojo.ProduceGroupListVo;
 import com.welding.dao.pojo.ProduceParentGroupVo;
 import com.welding.model.WeldingClassGroup;
@@ -178,5 +179,23 @@ public class WeldingGroupService {
         weldingClassGroupDao.updateById(produceGroupUpdate);
 
         return result;
+    }
+
+    public PageData<ClassGroupListVo> getClassGroupData(Integer pageNo, Integer pageSize, String groupName) {
+        PageData<ClassGroupListVo> pageData = new PageData<>();
+
+        QueryWrapper<WeldingClassGroup> wrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(groupName)) {
+            wrapper.eq("group_name", groupName);
+        }
+        wrapper.ne("status", Constants.DELETE);
+
+        IPage<ClassGroupListVo> page = new Page<>(pageNo, pageSize);
+        // @todo 逻辑没通
+        IPage<ClassGroupListVo> pageRecords = weldingClassGroupDao.queryGroupListPage(page, wrapper);
+        pageData.setData(pageRecords.getRecords());
+        pageData.setPage(Long.valueOf(pageRecords.getCurrent()).intValue());
+        pageData.setTotal(Long.valueOf(pageRecords.getTotal()).intValue());
+        return pageData;
     }
 }

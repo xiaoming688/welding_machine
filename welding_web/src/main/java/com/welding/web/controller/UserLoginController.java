@@ -40,14 +40,14 @@ public class UserLoginController {
         String username = loginDto.getAccountNo();
         String pwd = loginDto.getPassword();
         Boolean rememberMe = loginDto.getRememberMe();
-        log.info(" pwd: {}, username: {}", pwd, username);
+        log.info("pwd: {}, username: {}", pwd, username);
         ShiroToken token = new ShiroToken(username, pwd, rememberMe, Constants.LOGINTYPE_ACCOUNT_PASSWORD);
         Subject subject = ShiroUtils.getSubject();
         try {
             subject.login(token);
             LoginUser user = ShiroUtils.getSysUser();
             result.put("nickName", user.getUserName());
-            result.put("authority", user.getAuthority());
+            result.put("currentAuthority", user.getAuthority());
 
             sysOperateLogService.addLoginLog(Constants.LOG.LOGIN, user.getId());
             return result;

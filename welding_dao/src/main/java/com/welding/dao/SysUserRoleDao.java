@@ -1,6 +1,7 @@
 package com.welding.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.welding.dao.pojo.SysUserRoleBo;
 import com.welding.model.SysUserRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,4 +20,6 @@ public interface SysUserRoleDao extends BaseMapper<SysUserRole> {
             "left join sys_role rm on rm.id = ur.role_id " +
             "where ur.user_id= #{id}")
     List<Map<String, String>> queryUserRoles(@Param("id") Integer id);
+
+
 }
