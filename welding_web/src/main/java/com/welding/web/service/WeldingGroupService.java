@@ -51,6 +51,7 @@ public class WeldingGroupService {
 
         IPage<ProduceGroupListVo> pageRecords = weldingProduceGroupDao.queryGroupListPage(page, wrapper);
         pageData.setData(pageRecords.getRecords());
+        pageData.setSize(pageSize);
         pageData.setPage(Long.valueOf(pageRecords.getCurrent()).intValue());
         pageData.setTotal(Long.valueOf(pageRecords.getTotal()).intValue());
 
@@ -193,6 +194,7 @@ public class WeldingGroupService {
         IPage<ClassGroupListVo> page = new Page<>(pageNo, pageSize);
         // @todo 逻辑没通
         IPage<ClassGroupListVo> pageRecords = weldingClassGroupDao.queryGroupListPage(page, wrapper);
+        pageData.setSize(pageSize);
         pageData.setData(pageRecords.getRecords());
         pageData.setPage(Long.valueOf(pageRecords.getCurrent()).intValue());
         pageData.setTotal(Long.valueOf(pageRecords.getTotal()).intValue());

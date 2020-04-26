@@ -43,17 +43,19 @@ public class SysOperateLogService {
 
         QueryWrapper<WeldingOperateLog> wrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(logType)) {
-            wrapper.eq("log_type", logType);
+            wrapper.eq("l.log_type", logType);
         }
         IPage<SysLogVo> page = new Page<>(pageNo, pageSize);
 
         IPage<SysLogVo> pageRecords =  weldingOperateLogDao.queryLogPage(page, wrapper);
         pageData.setData(pageRecords.getRecords());
+        pageData.setSize(pageSize);
         pageData.setPage(Long.valueOf(pageRecords.getCurrent()).intValue());
         pageData.setTotal(Long.valueOf(pageRecords.getTotal()).intValue());
 
         return pageData;
-
     }
+
+
 
 }

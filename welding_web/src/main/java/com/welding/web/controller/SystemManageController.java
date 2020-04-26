@@ -48,7 +48,6 @@ public class SystemManageController {
         PageData<SysLogVo> pageData = sysOperateLogService.getSysOperateLogData(pageNo, pageSize, logType);
 
         result.setData(pageData);
-
         return result;
     }
 

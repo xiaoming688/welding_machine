@@ -14,7 +14,7 @@ import java.io.Serializable;
 @TableName(value = "welding_machine_model")
 public class WeldingMachineModel extends BaseModel implements Serializable {
 
-    private String modelNo;
+    private String modelCode;
 
     private Integer brandId;
 

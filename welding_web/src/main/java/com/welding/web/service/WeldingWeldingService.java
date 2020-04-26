@@ -121,6 +121,7 @@ public class WeldingWeldingService {
 
         IPage<WelderListVo> pageRecords = sysUserService.queryWelderListPage(page, wrapper);
         pageData.setData(pageRecords.getRecords());
+        pageData.setSize(pageSize);
         pageData.setPage(Long.valueOf(pageRecords.getCurrent()).intValue());
         pageData.setTotal(Long.valueOf(pageRecords.getTotal()).intValue());
 
