@@ -1,6 +1,7 @@
 package com.welding.web.controller;
 
 import com.welding.constants.Constants;
+import com.welding.dao.pojo.MachineListVo;
 import com.welding.dao.pojo.ModelListVo;
 import com.welding.util.MData;
 import com.welding.util.PageData;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author MM
  * @description
  * @create 2020-04-26 9:47
@@ -35,7 +35,7 @@ public class WeldingDeviceController {
 
     @ApiOperation(value = "获取品牌列表", notes = "")
     @RequestMapping(value = "/getBrandList", method = RequestMethod.POST)
-    public MData getBrandList(@RequestBody GetBrandListDto getBrandListDto){
+    public MData getBrandList(@RequestBody GetBrandListDto getBrandListDto) {
         MData result = new MData();
         Integer pageNo = getBrandListDto.getPageNo() == null
                 ? Constants.DEFAULT_PAGE_NO : getBrandListDto.getPageNo();
@@ -51,7 +51,7 @@ public class WeldingDeviceController {
 
     @ApiOperation(value = "添加品牌", notes = "")
     @RequestMapping(value = "/addBrand", method = RequestMethod.POST)
-    public MData addBrand(@RequestBody @Validated AddBrandDto addBrandDto){
+    public MData addBrand(@RequestBody @Validated AddBrandDto addBrandDto) {
         return weldingDeviceService.addBrand(addBrandDto);
     }
 
@@ -81,7 +81,7 @@ public class WeldingDeviceController {
 
     @ApiOperation(value = "添加型号", notes = "")
     @RequestMapping(value = "/addModel", method = RequestMethod.POST)
-    public MData addModel(@RequestBody @Validated AddModelDto addModelDto){
+    public MData addModel(@RequestBody @Validated AddModelDto addModelDto) {
         return weldingDeviceService.addModel(addModelDto);
     }
 
@@ -90,5 +90,30 @@ public class WeldingDeviceController {
     public MData deleteModel(@RequestBody @Validated DeleteModelDto deleteModelDto) {
         return weldingDeviceService.deleteModel(deleteModelDto);
     }
+
+
+    @ApiOperation(value = "焊机信息", notes = "")
+    @RequestMapping(value = "/getMachineList", method = RequestMethod.POST)
+    public MData getModelList(@RequestBody GetMachineListDto getMachineListDto) {
+        MData result = new MData();
+        Integer pageNo = getMachineListDto.getPageNo() == null
+                ? Constants.DEFAULT_PAGE_NO : getMachineListDto.getPageNo();
+        Integer pageSize = getMachineListDto.getPageSize() == null
+                ? Constants.DEFAULT_PAGE_SIZE : getMachineListDto.getPageSize();
+
+        String brandCode = getMachineListDto.getMachineCode();
+        String address = getMachineListDto.getAddress();
+        PageData<MachineListVo> pageData = weldingDeviceService.getMachineList(pageNo, pageSize, brandCode, address);
+
+        result.setData(pageData);
+        return result;
+    }
+
+    @ApiOperation(value = "添加焊机", notes = "")
+    @RequestMapping(value = "/addMachine", method = RequestMethod.POST)
+    public MData addMachine(@RequestBody @Validated AddMachineDto addModelDto) {
+        return weldingDeviceService.addMachine(addModelDto);
+    }
+
 
 }

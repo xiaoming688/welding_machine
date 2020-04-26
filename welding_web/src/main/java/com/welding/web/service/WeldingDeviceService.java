@@ -5,17 +5,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.welding.constants.Constants;
 import com.welding.dao.WeldingMachineBrandDao;
+import com.welding.dao.WeldingMachineDao;
 import com.welding.dao.WeldingModelDao;
+import com.welding.dao.pojo.MachineListVo;
 import com.welding.dao.pojo.ModelListVo;
+import com.welding.model.WeldingMachine;
 import com.welding.model.WeldingMachineBrand;
 import com.welding.model.WeldingMachineModel;
 import com.welding.util.MData;
 import com.welding.util.PageData;
 import com.welding.dao.pojo.BrandListVo;
-import com.welding.web.pojo.AddBrandDto;
-import com.welding.web.pojo.AddModelDto;
-import com.welding.web.pojo.DeleteBrandDto;
-import com.welding.web.pojo.DeleteModelDto;
+import com.welding.web.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -33,6 +33,9 @@ public class WeldingDeviceService {
 
     @Autowired
     private WeldingModelDao weldingModelDao;
+
+    @Autowired
+    private WeldingMachineDao weldingMachineDao;
 
     /**
      * 品牌信息列表
@@ -168,6 +171,56 @@ public class WeldingDeviceService {
         produceGroupUpdate.setId(produceGroup.getId());
         produceGroupUpdate.setStatus(Constants.DELETE);
         weldingModelDao.updateById(produceGroupUpdate);
+        return result;
+    }
+
+    public PageData<MachineListVo> getMachineList(Integer pageNo, Integer pageSize, String machineCode, String address) {
+        PageData<MachineListVo> pageData = new PageData<>();
+
+        QueryWrapper<WeldingMachine> wrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(machineCode)) {
+            wrapper.eq("m.machine_code", machineCode);
+        }
+        if (!StringUtils.isEmpty(address)) {
+            wrapper.eq("m.address", address);
+        }
+        wrapper.ne("m.status", Constants.DELETE);
+
+        IPage<MachineListVo> page = new Page<>(pageNo, pageSize);
+
+        IPage<MachineListVo> pageRecords = weldingMachineDao.queryMachineListPage(page, wrapper);
+        pageData.setData(pageRecords.getRecords());
+        pageData.setSize(pageSize);
+        pageData.setPage(Long.valueOf(pageRecords.getCurrent()).intValue());
+        pageData.setTotal(Long.valueOf(pageRecords.getTotal()).intValue());
+
+        return pageData;
+
+
+    }
+
+    public MData addMachine(AddMachineDto addModelDto) {
+        MData result = new MData();
+
+        String machineCode = addModelDto.getMachineCode();
+//        WeldingMachine group = getMchineByCode(machineCode);
+//        if (group != null) {
+//            return result.error("该焊机已存在");
+//        }
+
+        WeldingMachine produceGroup = new WeldingMachine();
+        produceGroup.setMachineCode(machineCode);
+        produceGroup.setName(addModelDto.getName());
+        produceGroup.setDescription(addModelDto.getDescription());
+        produceGroup.setStatus(Constants.ACTIVE);
+        produceGroup.setBrandId(addModelDto.getBrandId());
+        produceGroup.setModelId(addModelDto.getModelId());
+        produceGroup.setCollectionCode(addModelDto.getCollectionCode());
+        produceGroup.setNextMaintenance(addModelDto.getNextMaintenance());
+        produceGroup.setAddress(addModelDto.getAddress());
+        produceGroup.setMachineType(addModelDto.getMachineType());
+
+        weldingMachineDao.insert(produceGroup);
         return result;
     }
 }
