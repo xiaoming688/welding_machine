@@ -77,4 +77,29 @@ public class UserLoginController {
         return result;
     }
 
+    /**
+     * currentUser
+     *
+     * @return 1
+     */
+    @ApiOperation(value = "当前用户", notes = "")
+    @RequestMapping(value = "/currentUser", method = RequestMethod.GET)
+    public MData currentUser() {
+        MData result = new MData();
+        try {
+            LoginUser user = ShiroUtils.getSysUser();
+            if (user == null) {
+                result.put("isLogin", false);
+                return result.error("未登录");
+            }
+            result.put("name", user.getUserName());
+            result.put("notifyCount", 0);
+            result.put("avatar", "no");
+            result.put("isLogin", true);
+        } catch (Exception e) {
+            result.error("失败");
+            log.error("errorMessage:" + e.getMessage());
+        }
+        return result;
+    }
 }
