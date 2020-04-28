@@ -10,6 +10,7 @@ import com.welding.web.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -43,7 +44,7 @@ public class UserRoleController {
      */
     @ApiOperation(value = "获取角色信息列表", notes = "")
     @RequestMapping(value = "/getRoleList", method = RequestMethod.GET)
-    @RequiresRoles(value = {"superadmin", "admin"})
+    @RequiresRoles(value = {"superadmin", "admin"}, logical = Logical.OR)
     public MData getRoleList() {
         MData result = new MData();
 
@@ -69,7 +70,7 @@ public class UserRoleController {
      */
     @ApiOperation(value = "添加角色", notes = "")
     @RequestMapping(value = "/addRole", method = RequestMethod.POST)
-    @RequiresRoles(value = {"superadmin", "admin"})
+    @RequiresRoles(value = {"superadmin", "admin"}, logical = Logical.OR)
     public MData addRole(@RequestBody @Validated AddRoleDto addRoleDto) {
         return sysUserService.addRole(addRoleDto);
     }
