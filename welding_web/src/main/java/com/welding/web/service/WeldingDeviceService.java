@@ -136,7 +136,6 @@ public class WeldingDeviceService {
     public WeldingMachineModel getModelByCode(String modelCode) {
         QueryWrapper<WeldingMachineModel> wrapper = new QueryWrapper<>();
         wrapper.eq("model_code", modelCode);
-        //是否需要处理删除状态。。todo
         return weldingModelDao.selectOne(wrapper);
     }
 
@@ -203,10 +202,10 @@ public class WeldingDeviceService {
         MData result = new MData();
 
         String machineCode = addModelDto.getMachineCode();
-//        WeldingMachine group = getMchineByCode(machineCode);
-//        if (group != null) {
-//            return result.error("该焊机已存在");
-//        }
+        WeldingMachine group = getMachineByCode(machineCode);
+        if (group != null) {
+            return result.error("该焊机已存在");
+        }
 
         WeldingMachine produceGroup = new WeldingMachine();
         produceGroup.setMachineCode(machineCode);
@@ -222,5 +221,27 @@ public class WeldingDeviceService {
 
         weldingMachineDao.insert(produceGroup);
         return result;
+    }
+
+    /**
+     * 删除焊机
+     * @param deleteMachineDto
+     * @return
+     */
+    public MData deleteMachine(DeleteMachineDto deleteMachineDto) {
+        MData result = new MData();
+        String machineCode = deleteMachineDto.getMachineCode();
+        WeldingMachine group = getMachineByCode(machineCode);
+        if (group == null) {
+            return result.error("该焊机不存在");
+        }
+        weldingMachineDao.deleteById(group.getId());
+        return result;
+    }
+
+    public WeldingMachine getMachineByCode(String machineCode) {
+        QueryWrapper<WeldingMachine> wrapper = new QueryWrapper<>();
+        wrapper.eq("model_code", machineCode);
+        return weldingMachineDao.selectOne(wrapper);
     }
 }

@@ -115,5 +115,11 @@ public class WeldingDeviceController {
         return weldingDeviceService.addMachine(addModelDto);
     }
 
+    @ApiOperation(value = "删除焊机", notes = "")
+    @RequestMapping(value = "/deleteMachine", method = RequestMethod.POST)
+    public MData deleteMachine(@RequestBody @Validated DeleteMachineDto deleteMachineDto) {
+        return weldingDeviceService.deleteMachine(deleteMachineDto);
+    }
+
 
 }
