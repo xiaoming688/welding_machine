@@ -21,8 +21,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WeldingModelDao extends BaseMapper<WeldingMachineModel> {
 
-    @Select("select l.model_code as modelCode, l.name as name, u.name as brandName, " +
-            "l.description as description from welding_machine_model l " +
-            "left join welding_machine_brand u on u.id = l.brand_id ${ew.customSqlSegment}")
+    @Select("select l.model_code as modelCode, l.name as name, l.brand_name as brandName, " +
+            "l.description as description from welding_machine_model l ${ew.customSqlSegment}")
     IPage<ModelListVo> queryModelListPage(IPage<ModelListVo> page,  @Param(Constants.WRAPPER) QueryWrapper<WeldingMachineModel> wrapper);
 }

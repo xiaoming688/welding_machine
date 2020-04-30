@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 客户端触发操作
+ *
  * @author MM
  */
 @Slf4j
@@ -41,7 +42,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        log.warn("--------Netty Disconnect Client IP is :" + ctx.channel().id().asShortText() + " "
+        log.info("--------Netty Disconnect Client IP is :" + ctx.channel().id().asShortText() + " "
                 + ctx.channel().remoteAddress() + "--------");
         log.info("================9========================");
         ctx.close();
@@ -61,8 +62,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         byte[] req = new byte[buf.readableBytes()];
         buf.readBytes(req);
         String body = new String(req, "UTF-8");
+        String bodyGBK = new String(req, "GBK");
         buf.release();
-        log.info("[请求报文：][" + body + "]");
+        log.info("[请求报文 UTF-8：][" + body + "]");
+        log.info("[请求报文 GBK：][" + bodyGBK + "]");
 
         handleMessage(ctx, body);
     }

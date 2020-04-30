@@ -12,10 +12,10 @@ import javax.validation.constraints.NotNull;
  **/
 @Data
 public class AddModelDto {
-    @NotEmpty(message = "brandId不能为空")
+    @NotEmpty(message = "modelCode不能为空")
     private String modelCode;
     private String name;
     private String description;
-    @NotNull(message = "brandId不能为空")
-    private Integer brandId;
+    @NotNull(message = "brandName不能为空")
+    private String brandName;
 }

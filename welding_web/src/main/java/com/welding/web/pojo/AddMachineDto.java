@@ -7,8 +7,8 @@ public class AddMachineDto {
     private String machineCode;
     private String name;
     private String description;
-    private Integer brandId;
-    private Integer modelId;
+    private String brandName;
+    private String modelName;
     private String machineType;
     private String collectionCode;
     private String nextMaintenance;

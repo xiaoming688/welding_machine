@@ -16,7 +16,7 @@ public class WeldingMachineModel extends BaseModel implements Serializable {
 
     private String modelCode;
 
-    private Integer brandId;
+    private String brandName;
 
     private String name;
 

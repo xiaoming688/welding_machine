@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "设备管理", description = "")
 @Slf4j
 @RestController
-@RequestMapping("/welding")
+@RequestMapping("/xxx")
 public class WeldingDeviceController {
 
     @Autowired

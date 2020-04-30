@@ -105,11 +105,7 @@ public class WeldingDeviceService {
         if (produceGroup == null) {
             return result.error("brandCode有误");
         }
-        WeldingMachineBrand produceGroupUpdate = new WeldingMachineBrand();
-        produceGroupUpdate.setId(produceGroup.getId());
-        produceGroupUpdate.setStatus(Constants.DELETE);
-
-        weldingMachineBrandDao.updateById(produceGroupUpdate);
+        weldingMachineBrandDao.deleteById(produceGroup);
         return result;
     }
 
@@ -153,7 +149,7 @@ public class WeldingDeviceService {
         produceGroup.setName(addModelDto.getName());
         produceGroup.setDescription(addModelDto.getDescription());
         produceGroup.setStatus(Constants.ACTIVE);
-        produceGroup.setBrandId(addModelDto.getBrandId());
+        produceGroup.setBrandName(addModelDto.getBrandName());
 
         weldingModelDao.insert(produceGroup);
         return result;
@@ -164,12 +160,9 @@ public class WeldingDeviceService {
         String brandCode = deleteModelDto.getModelCode();
         WeldingMachineModel produceGroup = getModelByCode(brandCode);
         if (produceGroup == null) {
-            return result.error("brandCode有误");
+            return result.error("modelCode有误");
         }
-        WeldingMachineModel produceGroupUpdate = new WeldingMachineModel();
-        produceGroupUpdate.setId(produceGroup.getId());
-        produceGroupUpdate.setStatus(Constants.DELETE);
-        weldingModelDao.updateById(produceGroupUpdate);
+        weldingModelDao.deleteById(produceGroup);
         return result;
     }
 
@@ -212,8 +205,8 @@ public class WeldingDeviceService {
         produceGroup.setName(addModelDto.getName());
         produceGroup.setDescription(addModelDto.getDescription());
         produceGroup.setStatus(Constants.ACTIVE);
-        produceGroup.setBrandId(addModelDto.getBrandId());
-        produceGroup.setModelId(addModelDto.getModelId());
+        produceGroup.setBrandName(addModelDto.getBrandName());
+        produceGroup.setModelName(addModelDto.getModelName());
         produceGroup.setCollectionCode(addModelDto.getCollectionCode());
         produceGroup.setNextMaintenance(addModelDto.getNextMaintenance());
         produceGroup.setAddress(addModelDto.getAddress());

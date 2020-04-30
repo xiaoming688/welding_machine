@@ -18,8 +18,7 @@ public interface WeldingMachineDao extends BaseMapper<WeldingMachine> {
 
     @Select("select m.machine_code as machineCode, m.name as machineName, m.machine_type as machineType, " +
             "m.collection_code as collectionCode,  m.next_maintenance as nextMaintenance,  m.address, " +
-            "b.name as brandName, n.name as modelName from welding_machine m " +
-            "left join welding_machine_brand b on b.id = m.brand_id left join welding_machine_model n on n.id = m.model_id ${ew.customSqlSegment}")
+            "m.brand_name as brandName, m.model_name as modelName from welding_machine m ${ew.customSqlSegment}")
     IPage<MachineListVo> queryMachineListPage(IPage<MachineListVo> page,
                                               @Param(Constants.WRAPPER) QueryWrapper<WeldingMachine> wrapper);
 }
