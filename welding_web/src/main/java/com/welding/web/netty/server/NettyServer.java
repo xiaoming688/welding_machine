@@ -1,12 +1,17 @@
 
 package com.welding.web.netty.server;
 
+import com.sun.corba.se.impl.protocol.giopmsgheaders.MessageBase;
 import com.welding.constants.Constants;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -30,7 +35,7 @@ public class NettyServer implements Runnable {
             //绑定线程池
             bootstrap.group(bossGroup, workerGroup)
                     // 指定使用的channel
-                .channel(NioServerSocketChannel.class)  
+                .channel(NioServerSocketChannel.class)
                 .childOption(ChannelOption.RCVBUF_ALLOCATOR, new AdaptiveRecvByteBufAllocator(64, 65535, 65535))
                     // 绑定客户端连接时候触发操作
                 .childHandler(new ChannelInitializer<SocketChannel>() { 

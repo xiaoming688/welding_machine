@@ -1,14 +1,21 @@
 package com.welding.web.netty.server;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.welding.util.SpringContext;
 import com.welding.web.netty.context.MessageContext;
 import com.welding.web.netty.service.IMessageService;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 客户端触发操作
@@ -17,6 +24,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@ChannelHandler.Sharable
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 
@@ -49,6 +57,18 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
+     * 切分信息的方法
+     *
+     * @param msgBytes
+     * @return
+     */
+    private List<byte[]> getMsgList(byte[] msgBytes) {
+        List<byte[]> list = new ArrayList<>();
+        //具体业务代码略
+        return list;
+    }
+
+    /**
      * 功能：读取服务器发送过来的信息
      *
      * @param ctx
@@ -63,7 +83,26 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         buf.readBytes(req);
         String body = new String(req, "UTF-8");
         String bodyGBK = new String(req, "GBK");
-        buf.release();
+
+        //解析json
+        JSONObject jsonObject = null;
+        try {
+            String end = body.substring(body.length() - 1);
+            if (!end.equals("}")) {
+                log.info("error msg!!!!" + end.toCharArray());
+                return;
+            }
+            jsonObject = JSON.parseObject(body);
+            log.info("解析完成：" + jsonObject.toString());
+            //这里可以写业务代码
+        } catch (Exception e) {
+            log.info("请注意，报文异常！" + e.getMessage());
+        } finally {
+            //释放msg 不然可能会导致内存溢出 netty操作的应该是直接内存
+            ReferenceCountUtil.release(msg);
+        }
+
+
         log.info("[请求报文 UTF-8：][" + body + "]");
         log.info("[请求报文 GBK：][" + bodyGBK + "]");
 
