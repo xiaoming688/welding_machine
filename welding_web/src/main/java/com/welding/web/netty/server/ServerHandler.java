@@ -90,7 +90,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             String end = body.substring(body.length() - 1);
             if (!end.equals("}")) {
                 log.info("error msg!!!!" + end.toCharArray());
-                return;
+//                return;
             }
             jsonObject = JSON.parseObject(body);
             log.info("解析完成：" + jsonObject.toString());
