@@ -58,4 +58,6 @@ public class WeldingData extends BaseModel implements Serializable {
 
     private Integer isHistory;
 
+    private String requestData;
+
 }

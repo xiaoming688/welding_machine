@@ -40,6 +40,7 @@ public class SocketServerServiceImpl extends AbstractServiceAdapter {
             weldingData.setReformUnit(Constants.DEFAULT_REFURMUNIT);
             weldingData.setHjProcess(getHjProcess(weldingData.getProcess()));
             weldingData.setWarn(getWarn(weldingData));
+            weldingData.setRequestData(message);
             // 2.转换为统一出入平台报文
             Integer result = 0;
             if (weldingData.getWeldCode() != null && weldingData.getEquipCode() != null) {
