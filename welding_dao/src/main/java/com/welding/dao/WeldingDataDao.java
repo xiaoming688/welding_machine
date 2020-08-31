@@ -2,8 +2,10 @@ package com.welding.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.welding.model.WeldingData;
+import com.welding.model.WeldingProcessDic;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +34,6 @@ public interface WeldingDataDao extends BaseMapper<WeldingData> {
             "</foreach></script>")
     int updateHistoryBatch(@Param("obj") List<WeldingData> objs);
 
+    @Select("select * from welding_process_dic")
+    List<WeldingProcessDic> queryProcessDics();
 }

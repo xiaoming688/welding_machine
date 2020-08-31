@@ -46,14 +46,16 @@ public class TestMain {
     }
 
     public static void main(String[] args) throws Exception {
+        System.out.println("0".compareTo("110"));
+
         String reg1 = "#01(.*?)#02(.*?)#03(.*?)#";
         String reg2 = ".*&&(.*?)AA";
         String reg3 = ".*&&(.*?)&(\\d+)";
-        String reg4 = "P:(.*?)#L:(.*?)#C:(.*?)#V:(.*?)#T(.*?)#A:(.*?)#D:(.*)";
+        String reg4 = "P:(.*?)#L:(.*?)#C:(.*?)#V:(.*?)#T:(.*?)#H:(.*?)#A:(.*?)#D:(.*)";
         String value = "&&#01GDNGG4C-04-MYC085+008-HN01-SB-LW#02HN01#03YDXB-WPS-13-607#^M" +
                 "&&HN-05AA15225601060AAAAAA^M" +
                 "&&F500GD&18120327041^M " +
-                "P:CCW #L:RW #C:0#V:00.0#T:0.0#A:63#D:2020-9-23 12:21:42";
+                "P:CCW #L:RW #C:0#V:00.0#T:37.4#H:27.0#A:67#D:2020-8-31 16:06:24";
         System.out.println(value);
         Pattern pattern1 = Pattern.compile(reg1);
         // 内容 与 匹配规则 的测试
@@ -107,6 +109,7 @@ public class TestMain {
             System.out.println(matcher4.group(5));
             System.out.println(matcher4.group(6));
             System.out.println(matcher4.group(7));
+            System.out.println(matcher4.group(8));
         } else {
             System.out.println(" 没有匹配到内容....");
         }

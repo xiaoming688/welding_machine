@@ -36,6 +36,7 @@ public abstract class AbstractServiceAdapter implements IMessageService<String> 
         messageContext.register(getCode(), this);
     }
 
+
     /**
      * &&#01GDNGG4C-04-MYC085+008-HN01-SB-LW#02HN01#03YDXB-WPS-13-607#
      * &&HN-05AA15225601060AAAAAA
@@ -52,7 +53,7 @@ public abstract class AbstractServiceAdapter implements IMessageService<String> 
             String line1 = "#01(.*?)#02(.*?)#03(.*?)#";
             String line2 = ".*&&(.*?)AA";
             String line3 = ".*&&(.*?)&(\\d+)";
-            String line4 = "P:(.*?)#L:(.*?)#C:(.*?)#V:(.*?)#T:(.*?)#A:(.*?)#D:(.*)";
+            String line4 = "P:(.*?)#L:(.*?)#C:(.*?)#V:(.*?)#T:(.*?)#H:(.*?)#A:(.*?)#D:(.*)";
             //先解第一行
             Matcher matcher = getMatcher(line1, body);
             if (matcher.find()) {
@@ -86,8 +87,9 @@ public abstract class AbstractServiceAdapter implements IMessageService<String> 
                 result.setCurrent(matcher.group(3));
                 result.setVoltage(matcher.group(4));
                 result.setTemp(matcher.group(5));
-                result.setAngle(matcher.group(6));
-                result.setCjTime(matcher.group(7));
+                result.setHumidity(matcher.group(6));
+                result.setAngle(matcher.group(7));
+                result.setCjTime(matcher.group(8));
 //                result.setCjTime(DateUtil.formatDateTime(new Date()));
             } else {
                 log.info("第四行数据解析有误: {}", body);

@@ -7,6 +7,7 @@ import com.welding.constants.Constants;
 import com.welding.dao.WeldingDataDao;
 import com.welding.model.SysUserRole;
 import com.welding.model.WeldingData;
+import com.welding.model.WeldingProcessDic;
 import com.welding.util.Http;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.entity.StringEntity;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author MM
@@ -135,4 +137,7 @@ public class WeldingDataService {
         weldingDataDao.updateHistoryBatch(updateList);
     }
 
+    public List<WeldingProcessDic> getHjprocessDic() {
+        return weldingDataDao.queryProcessDics();
+    }
 }
