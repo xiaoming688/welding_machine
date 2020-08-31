@@ -22,13 +22,13 @@ public class HeatBeatHandler extends ChannelInboundHandlerAdapter {
             //这里虽然监听了三种空闲,但是我们只对读写空闲做操作
             //如果是读空闲
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
-                log.info("读空闲事件触发...");
+                log.info("读空闲事件触发...{}", ctx.channel().id());
             } else if (idleStateEvent.state() == IdleState.WRITER_IDLE) {
-                log.info("写空闲事件触发...");
+                log.info("写空闲事件触发...{}", ctx.channel().id());
             } else if (idleStateEvent.state() == IdleState.ALL_IDLE) {
                 log.info("===============================================");
-                log.info("读写空闲事件触发，关闭该通道资源");
-                ctx.channel().close();//关闭该通道
+                log.info("读写空闲事件触发...{}", ctx.channel().id());
+//                ctx.channel().close();//关闭该通道
             }
         }
     }

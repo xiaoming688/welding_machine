@@ -44,7 +44,7 @@ public class NettyServer implements Runnable {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            log.info("================7.2 报告，有个socket客户端链接到本服务器, IP为："
+                            log.info("================7.2 报告，有个socket客户端链接到本服务器, IP为：" + ch.id().asShortText() + "/"
                                     + ch.remoteAddress() + ", Port为：" + ch.localAddress().getPort() + "========================");
                             ch.pipeline().addLast(new ServerHandler()); // 客户端触发操作
                             ch.pipeline().addLast(new IdleStateHandler(40, 50, 60));
