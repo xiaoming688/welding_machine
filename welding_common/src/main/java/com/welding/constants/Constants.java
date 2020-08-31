@@ -22,6 +22,8 @@ public class Constants {
     public static final Integer SYNC_NOT_IS_HISTORY = 0;
     public static final Object SYNC_INIT = "init";
     public static final int NETTY_SERVER_PORT = 59987;
+    public static final String DEFAULT_PROJECTID = "3KLNJBiS99iXDOsSSpfcf8";
+    public static final String DEFAULT_REFURMUNIT = "3";
 
     public static class LOG {
         public static final String ADD = "add";

@@ -32,6 +32,13 @@ public class WeldingDataService {
     @Resource
     private WeldingDataDao weldingDataDao;
 
+    public Integer addWeldingData(WeldingData data) {
+        if (data != null) {
+            return weldingDataDao.insert(data);
+        }
+        return -1;
+    }
+
 
     public List<WeldingData> queryCurrentData() {
         QueryWrapper<WeldingData> wrapper = new QueryWrapper<>();
@@ -93,7 +100,7 @@ public class WeldingDataService {
             log.info("result:" + r);
             JSONObject jsonResult = r.toJsonObject();
             //同步成功。。
-            if (jsonResult.get("result") != null && String.valueOf(jsonResult.get("result")).equals("1")) {
+            if (jsonResult.get("result") != null && String.valueOf(jsonResult.get("result")).equals("0")) {
                 updateWeldingDataStatus(dataList, Constants.SYNC_SUCCESS);
             } else {
                 updateWeldingDataHistory(dataList, Constants.SYNC_IS_HISTORY);

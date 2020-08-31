@@ -43,6 +43,8 @@ public class WeldingData extends BaseModel implements Serializable {
 
     private String projectId;
 
+    private String angle;
+
     private String warn;
 
     private String reformUnit;

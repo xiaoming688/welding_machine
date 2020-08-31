@@ -84,25 +84,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         String body = new String(req, "UTF-8");
         String bodyGBK = new String(req, "GBK");
 
-        //解析json
-        JSONObject jsonObject = null;
-        try {
-            String end = body.substring(body.length() - 1);
-            if (!end.equals("}")) {
-                log.info("error msg!!!!" + end.toCharArray());
-//                return;
-            }
-            jsonObject = JSON.parseObject(body);
-            log.info("解析完成：" + jsonObject.toString());
-            //这里可以写业务代码
-        } catch (Exception e) {
-            log.info("请注意，报文异常！" + e.getMessage());
-        } finally {
-            //释放msg 不然可能会导致内存溢出 netty操作的应该是直接内存
-            ReferenceCountUtil.release(msg);
-        }
-
-
         log.info("[请求报文 UTF-8：][" + body + "]");
         log.info("[请求报文 GBK：][" + bodyGBK + "]");
 
