@@ -89,8 +89,7 @@ public abstract class AbstractServiceAdapter implements IMessageService<String> 
                 result.setTemp(matcher.group(5));
                 result.setHumidity(matcher.group(6));
                 result.setAngle(matcher.group(7));
-                result.setCjTime(matcher.group(8));
-//                result.setCjTime(DateUtil.formatDateTime(new Date()));
+                result.setCjTime(matcher.group(8).replace("#", ""));
             } else {
                 log.info("第四行数据解析有误: {}", body);
             }

@@ -1,17 +1,20 @@
 package com.welding.web.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.cors.reactive.CorsUtils;
 import reactor.core.publisher.Mono;
 
 
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,6 +35,14 @@ public class CorsFilter implements Filter {
 
         if (request.getHeader("Origin") != null) {
             response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        }
+
+        Cookie[] cookieMultiValueMap = request.getCookies();
+        log.info("cookieMultiValueMap:{}", cookieMultiValueMap);
+        if (cookieMultiValueMap != null && cookieMultiValueMap.length > 0) {
+            for (Cookie cookie : cookieMultiValueMap) {
+                log.info("cookieMultiValueMap:" + cookie.getName() + "value:" + cookie.getValue() + " path:" + cookie.getPath());
+            }
         }
 
 

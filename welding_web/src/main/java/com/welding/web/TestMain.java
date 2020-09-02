@@ -8,6 +8,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import sun.misc.VM;
 
 import java.net.InetSocketAddress;
 import java.util.regex.Matcher;
@@ -46,7 +47,6 @@ public class TestMain {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println("0".compareTo("110"));
 
         String reg1 = "#01(.*?)#02(.*?)#03(.*?)#";
         String reg2 = ".*&&(.*?)AA";

@@ -40,6 +40,7 @@ public class NettyServer implements Runnable {
                     .channel(NioServerSocketChannel.class)
                     .childOption(ChannelOption.RCVBUF_ALLOCATOR,
                             new AdaptiveRecvByteBufAllocator(64, 65535, 65535))
+                    .childOption(ChannelOption.SO_KEEPALIVE, true)
                     // 绑定客户端连接时候触发操作
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override

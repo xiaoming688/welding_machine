@@ -52,7 +52,8 @@ public class SocketServerServiceImpl extends AbstractServiceAdapter {
                 // 4.返回报文转换为dto
             }
             //等等处理业务
-            return "处理成功！！！" + result;
+            log.info("处理成功：{}", result);
+            return "success";
         } catch (Exception e) {
             log.error("[交易处理异常]", e);
         }
@@ -108,6 +109,9 @@ public class SocketServerServiceImpl extends AbstractServiceAdapter {
     }
 
     private String getHjProcess(String process) {
+        if (process == null || "".equals(process)) {
+            return "";
+        }
         List<WeldingProcessDic> processDics = weldingDataService.getHjprocessDic();
         for (WeldingProcessDic processDic : processDics) {
             if (process.contains(processDic.getProcessName())) {

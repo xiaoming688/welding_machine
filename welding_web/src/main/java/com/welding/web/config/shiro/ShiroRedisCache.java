@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author MM
@@ -51,7 +52,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
         if (k == null) {
             return null;
         }
-        System.out.println("get cache key: "+ buildCacheKey(k));
+        System.out.println("get cache key: " + buildCacheKey(k));
         return (V) redisTemplateJdk.opsForValue().get(buildCacheKey(k));
     }
 
@@ -62,7 +63,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
         }
         long timeout = shiroConstants.getExpireTime() / 1000 + expireTime;
         System.out.println("put cache key: " + buildCacheKey(k) + ": timeout" + timeout);
-        redisTemplateJdk.opsForValue().set(buildCacheKey(k), v);
+        redisTemplateJdk.opsForValue().set(buildCacheKey(k), v, timeout, TimeUnit.SECONDS);
         return v;
     }
 
@@ -71,7 +72,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
         if (k == null) {
             return null;
         }
-        System.out.println("remove cache key: "+ buildCacheKey(k));
+        System.out.println("remove cache key: " + buildCacheKey(k));
         V v = (V) redisTemplateJdk.opsForValue().get(buildCacheKey(k));
         redisTemplateJdk.delete(buildCacheKey(k));
         return v;

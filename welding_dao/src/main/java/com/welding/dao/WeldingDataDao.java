@@ -1,6 +1,9 @@
 package com.welding.dao;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.welding.model.WeldingData;
 import com.welding.model.WeldingProcessDic;
 import org.apache.ibatis.annotations.Mapper;
@@ -36,4 +39,8 @@ public interface WeldingDataDao extends BaseMapper<WeldingData> {
 
     @Select("select * from welding_process_dic")
     List<WeldingProcessDic> queryProcessDics();
+
+    @Select("select * from welding_data")
+    IPage<WeldingData> queryPage(IPage<WeldingData> page,
+                                 @Param(Constants.WRAPPER) QueryWrapper<WeldingData> wrapper);
 }

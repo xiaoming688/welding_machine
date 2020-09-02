@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.welding.constants.Constants;
+import com.welding.dao.WeldingDataDao;
 import com.welding.dao.WeldingMachineBrandDao;
 import com.welding.dao.WeldingMachineDao;
 import com.welding.dao.WeldingModelDao;
 import com.welding.dao.pojo.MachineListVo;
 import com.welding.dao.pojo.ModelListVo;
+import com.welding.model.WeldingData;
 import com.welding.model.WeldingMachine;
 import com.welding.model.WeldingMachineBrand;
 import com.welding.model.WeldingMachineModel;
@@ -36,6 +38,9 @@ public class WeldingDeviceService {
 
     @Autowired
     private WeldingMachineDao weldingMachineDao;
+
+    @Autowired
+    private WeldingDataDao weldingDataDao;
 
     /**
      * 品牌信息列表
@@ -218,6 +223,7 @@ public class WeldingDeviceService {
 
     /**
      * 删除焊机
+     *
      * @param deleteMachineDto
      * @return
      */
@@ -236,5 +242,28 @@ public class WeldingDeviceService {
         QueryWrapper<WeldingMachine> wrapper = new QueryWrapper<>();
         wrapper.eq("model_code", machineCode);
         return weldingMachineDao.selectOne(wrapper);
+    }
+
+    public PageData<WeldingData> getMachineSyncData(MachineSyncDto machineSyncDto) {
+        PageData<WeldingData> pageData = new PageData<>();
+
+        QueryWrapper<WeldingData> wrapper = new QueryWrapper<>();
+//        if (!StringUtils.isEmpty(machineCode)) {
+//            wrapper.eq("m.machine_code", machineCode);
+//        }
+//        if (!StringUtils.isEmpty(address)) {
+//            wrapper.eq("m.address", address);
+//        }
+//        wrapper.ne("m.status", Constants.DELETE);
+
+        IPage<WeldingData> page = new Page<>(machineSyncDto.getPageNo(), machineSyncDto.getPageSize());
+
+        IPage<WeldingData> pageRecords = weldingDataDao.queryPage(page, wrapper);
+        pageData.setData(pageRecords.getRecords());
+        pageData.setSize(machineSyncDto.getPageSize());
+        pageData.setPage(Long.valueOf(pageRecords.getCurrent()).intValue());
+        pageData.setTotal(Long.valueOf(pageRecords.getTotal()).intValue());
+
+        return pageData;
     }
 }

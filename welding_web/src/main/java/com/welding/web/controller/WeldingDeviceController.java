@@ -3,6 +3,7 @@ package com.welding.web.controller;
 import com.welding.constants.Constants;
 import com.welding.dao.pojo.MachineListVo;
 import com.welding.dao.pojo.ModelListVo;
+import com.welding.model.WeldingData;
 import com.welding.util.MData;
 import com.welding.util.PageData;
 import com.welding.dao.pojo.BrandListVo;
@@ -31,6 +32,25 @@ public class WeldingDeviceController {
 
     @Autowired
     private WeldingDeviceService weldingDeviceService;
+
+    @ApiOperation(value = "获取焊机同步数据", notes = "")
+    @RequestMapping(value = "/getMachineSyncData", method = RequestMethod.POST)
+    public MData getMachineSyncData(@RequestBody @Validated MachineSyncDto machineSyncDto) {
+        MData result = new MData();
+        Integer pageNo = machineSyncDto.getPageNo() == null
+                ? Constants.DEFAULT_PAGE_NO : machineSyncDto.getPageNo();
+        Integer pageSize = machineSyncDto.getPageSize() == null
+                ? Constants.DEFAULT_PAGE_SIZE : machineSyncDto.getPageSize();
+
+        machineSyncDto.setPageNo(pageNo);
+        machineSyncDto.setPageSize(pageSize);
+
+        PageData<WeldingData> pageData = weldingDeviceService.getMachineSyncData(machineSyncDto);
+
+        result.setData(pageData);
+
+        return result;
+    }
 
 
     @ApiOperation(value = "获取品牌列表", notes = "")
