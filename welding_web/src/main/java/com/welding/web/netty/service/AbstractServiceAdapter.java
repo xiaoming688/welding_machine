@@ -76,7 +76,7 @@ public abstract class AbstractServiceAdapter implements IMessageService<String> 
             if (matcher.find()) {
                 result.setEquipCode(matcher.group(1) + "+" + matcher.group(2));
             } else {
-                log.info("第二行数据解析有误: {}", body);
+                log.info("第三行数据解析有误: {}", body);
             }
 
             //第四行PERSON_CODE

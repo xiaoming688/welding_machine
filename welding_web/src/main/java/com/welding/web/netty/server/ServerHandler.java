@@ -82,10 +82,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         byte[] req = new byte[buf.readableBytes()];
         buf.readBytes(req);
         String body = new String(req, "UTF-8");
-        String bodyGBK = new String(req, "GBK");
+//        String bodyGBK = new String(req, "GBK");
 
-        log.info("[请求报文 UTF-8：][" + body + "]");
-        log.info("[请求报文 GBK：][" + bodyGBK + "]");
+        log.info(ctx.channel().id() + "[请求报文 UTF-8：][" + body + "]");
+//        log.info("[请求报文 GBK：][" + bodyGBK + "]");
 
         handleMessage(ctx, body);
     }
