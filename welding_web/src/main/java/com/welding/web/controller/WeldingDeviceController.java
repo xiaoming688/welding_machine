@@ -33,6 +33,26 @@ public class WeldingDeviceController {
     @Autowired
     private WeldingDeviceService weldingDeviceService;
 
+
+    @ApiOperation(value = "获取焊机同步首页数据", notes = "")
+    @RequestMapping(value = "/getMachineSyncIndexData", method = RequestMethod.POST)
+    public MData getMachineSyncIndexData(@RequestBody @Validated MachineIndexDto machineSyncDto) {
+        MData result = new MData();
+        Integer pageNo = machineSyncDto.getPageNo() == null
+                ? Constants.DEFAULT_PAGE_NO : machineSyncDto.getPageNo();
+        Integer pageSize = machineSyncDto.getPageSize() == null
+                ? Constants.DEFAULT_PAGE_SIZE : machineSyncDto.getPageSize();
+
+        machineSyncDto.setPageNo(pageNo);
+        machineSyncDto.setPageSize(pageSize);
+
+        PageData<WeldingData> pageData = weldingDeviceService.getMachineSyncIndexData(machineSyncDto);
+
+        result.setData(pageData);
+
+        return result;
+    }
+
     @ApiOperation(value = "获取焊机同步数据", notes = "")
     @RequestMapping(value = "/getMachineSyncData", method = RequestMethod.POST)
     public MData getMachineSyncData(@RequestBody @Validated MachineSyncDto machineSyncDto) {

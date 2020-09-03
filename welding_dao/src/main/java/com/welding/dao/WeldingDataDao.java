@@ -43,4 +43,8 @@ public interface WeldingDataDao extends BaseMapper<WeldingData> {
     @Select("select * from welding_data")
     IPage<WeldingData> queryPage(IPage<WeldingData> page,
                                  @Param(Constants.WRAPPER) QueryWrapper<WeldingData> wrapper);
+
+    @Select("SELECT a.* FROM (SELECT * FROM welding_data ORDER BY create_time desc) a  GROUP BY a.equip_code")
+    IPage<WeldingData> getMachineSyncIndexData(IPage<WeldingData> page,
+                                               @Param(Constants.WRAPPER) QueryWrapper<WeldingData> wrapper);
 }

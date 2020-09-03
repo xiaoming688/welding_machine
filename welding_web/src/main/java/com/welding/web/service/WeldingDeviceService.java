@@ -248,17 +248,32 @@ public class WeldingDeviceService {
         PageData<WeldingData> pageData = new PageData<>();
 
         QueryWrapper<WeldingData> wrapper = new QueryWrapper<>();
-//        if (!StringUtils.isEmpty(machineCode)) {
-//            wrapper.eq("m.machine_code", machineCode);
-//        }
+        if (!StringUtils.isEmpty(machineSyncDto.getEquipCode())) {
+            wrapper.eq("equip_code", machineSyncDto.getEquipCode());
+        }
 //        if (!StringUtils.isEmpty(address)) {
 //            wrapper.eq("m.address", address);
 //        }
-//        wrapper.ne("m.status", Constants.DELETE);
+        wrapper.orderByDesc("create_time");
 
         IPage<WeldingData> page = new Page<>(machineSyncDto.getPageNo(), machineSyncDto.getPageSize());
 
         IPage<WeldingData> pageRecords = weldingDataDao.queryPage(page, wrapper);
+        pageData.setData(pageRecords.getRecords());
+        pageData.setSize(machineSyncDto.getPageSize());
+        pageData.setPage(Long.valueOf(pageRecords.getCurrent()).intValue());
+        pageData.setTotal(Long.valueOf(pageRecords.getTotal()).intValue());
+
+        return pageData;
+    }
+
+    public PageData<WeldingData> getMachineSyncIndexData(MachineIndexDto machineSyncDto) {
+        PageData<WeldingData> pageData = new PageData<>();
+
+        QueryWrapper<WeldingData> wrapper = new QueryWrapper<>();
+        IPage<WeldingData> page = new Page<>(machineSyncDto.getPageNo(), machineSyncDto.getPageSize());
+
+        IPage<WeldingData> pageRecords = weldingDataDao.getMachineSyncIndexData(page, wrapper);
         pageData.setData(pageRecords.getRecords());
         pageData.setSize(machineSyncDto.getPageSize());
         pageData.setPage(Long.valueOf(pageRecords.getCurrent()).intValue());

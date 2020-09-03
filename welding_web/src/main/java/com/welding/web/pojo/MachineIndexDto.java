@@ -5,11 +5,10 @@ import lombok.Data;
 /**
  * @author MM
  * @description
- * @create 2020-09-02 12:34
+ * @create 2020-09-03 10:29
  **/
 @Data
-public class MachineSyncDto {
+public class MachineIndexDto {
     private Integer pageNo;
     private Integer pageSize;
-    private String equipCode;
 }
